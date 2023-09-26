@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Clinical_Managment_System.Validation
+{
+    public class ConsultationValidation
+    {
+        public bool isConsultationValid(string note)
+        {
+            if (string.IsNullOrEmpty(note)) 
+                return false;
+
+            return true;
+        }
+    }
+}
