@@ -13,4 +13,11 @@ namespace Clinical_Managment_System.Models
         public string SampleName { get; set; }
 
     }
+
+    public class Panels
+    {
+        public int Id { get; set; } 
+        public int SampleId { get; set; }    
+        public string PanelName { get; set; }
+    }
 }

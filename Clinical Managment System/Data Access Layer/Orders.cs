@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Clinical_Managment_System.Data_Access_Layer
 {
@@ -32,6 +33,29 @@ namespace Clinical_Managment_System.Data_Access_Layer
                 samples.Add(sample);    
             }
             return samples; 
+        }
+
+        public List<Panels> GetPanels(int sampleId)
+        {
+            List<Panels> panels = new List<Panels>();
+            string query = "select id,description from [order].order_class where category_id=@id";
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@id", sampleId);    
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Panels panel = new Panels
+                {
+                    Id = reader.GetInt32(0),
+                    SampleId = reader.GetInt32(1),
+                    PanelName = reader.GetString(2),
+                };
+                panels.Add(panel);
+            }
+            return panels;
+
         }
 
     }

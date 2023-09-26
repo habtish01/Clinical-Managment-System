@@ -597,7 +597,7 @@ namespace Clinical_Managment_System
                 control.Persumed.BackColor = SystemColors.Window;
             }
         }
-
+        #region habtish
         private void addDescription_Click(object sender, EventArgs e)
         {
             if (countButtonClick)
@@ -619,11 +619,12 @@ namespace Clinical_Managment_System
             }
 
         }
+        #endregion
 
-       
+
 
         ////////////////////////////Lab Order////////////////////////////////////////
-        
+
         public void createSamples()
         {
             int sampleHeight = 0;
@@ -665,6 +666,11 @@ namespace Clinical_Managment_System
                 // Retrieve the associated data from the sender's Tag property
                 if (button.Tag is Sample samples)
                 {
+                    var panels = orders.GetPanels(samples.Id);
+                    foreach (var panel in panels) 
+                    { 
+
+                    }
                     MessageBox.Show("Sample Name: " + button.Text + "\nID: " + samples.Id);
                 }
             }
