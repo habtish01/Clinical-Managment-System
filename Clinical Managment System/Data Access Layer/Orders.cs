@@ -49,12 +49,35 @@ namespace Clinical_Managment_System.Data_Access_Layer
                 Panels panel = new Panels
                 {
                     Id = reader.GetInt32(0),
-                    SampleId = reader.GetInt32(1),
-                    PanelName = reader.GetString(2),
+                    
+                    PanelName = reader.GetString(1),
                 };
                 panels.Add(panel);
             }
             return panels;
+
+        }
+
+        public List<Tests> GetTests(int panelId)
+        {
+            List<Tests> tests = new List<Tests>();
+            string query = "select id,description,type from [order].order_test where class_id=@id";
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@id", panelId);
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Tests test = new Tests
+                {
+                    Id = reader.GetInt32(0),                   
+                    TestName = reader.GetString(1),
+                    TestType = reader.GetString(2),
+                };
+                tests.Add(test);
+            }
+            return tests;
 
         }
 

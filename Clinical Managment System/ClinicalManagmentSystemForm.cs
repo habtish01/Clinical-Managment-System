@@ -4,7 +4,7 @@ using Clinical_Managment_System.Properties;
 using Clinical_Managment_System.Validation;
 using DevExpress.Utils.ScrollAnnotations;
 using DevExpress.XtraEditors;
-using MaterialSkin;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+//using static DevExpress.Data.Mask.Internal.MaskSettings<T>;
 
 namespace Clinical_Managment_System
 {
@@ -502,6 +503,7 @@ namespace Clinical_Managment_System
                 clickedButton.Text = "Remove";
                 countButtonClick = !countButtonClick;
                 parentPanel.Size = new Size(1213, 180);
+               // parentPanel.Location=new Point()
             }
             else if (!countButtonClick)
             {
@@ -517,21 +519,10 @@ namespace Clinical_Managment_System
 
             if (panelCollection.Count > 0)
             {
-                // Remove the last panel in the collection (you can implement your own logic to select a panel)
-                //    Panel panelToRemove = (sender as Button).Parent as Panel;
-                //if (panelToRemove != null)
-                //{
+                
                 Panel lastPanel = panelCollection[panelCollection.Count - 1];
                 panelCollection.Remove(lastPanel);
                 DignosisPanel.Controls.Remove(lastPanel);
-
-
-                //for (int i = 0; i < panelCollection.Count; i++)
-                //{
-                //    // Adjust the spacing and starting Y position as needed
-                //    newY = newY + 210;
-                //    panelCollection[i].Location = new Point(0, newY);
-                //}
                 x = x - 190;
             }
 
@@ -667,19 +658,113 @@ namespace Clinical_Managment_System
                 if (button.Tag is Sample samples)
                 {
                     var panels = orders.GetPanels(samples.Id);
+                    int panelButtonX = 11;
+                    int panelButtonY = 35;
+                    int panelCount = 0;
+                    int countButtons = 0;
+                    groupBoxPanel.Controls.Clear(); 
                     foreach (var panel in panels) 
                     { 
-
+                        Button panelButton=new Button();
+                        panelButton.Tag = panel;
+                        panelButton.Click += PanelButton_Click;
+                        panelButton.Text = panel.PanelName;
+                        panelButton.Size = new Size(270, 42);
+                        panelButton.BackColor = Color.WhiteSmoke;
+                        panelButton.Font = new Font("Times New Roman", 14.25F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+                        panelButton.Location=new Point(panelButtonX,panelButtonY);
+                        panelButtonX += 280;
+                        groupBoxPanel.Controls.Add(panelButton);    
+                        panelCount++;
+                        if (panelCount % 4 == 0)
+                        {
+                            panelButtonX = 11;
+                            panelButtonY += 54;
+                            countButtons++;
+                        }
+                       
+                   }
+                    if (panels.Count % 4 != 0)
+                    {
+                        countButtons+=1;
                     }
-                    MessageBox.Show("Sample Name: " + button.Text + "\nID: " + samples.Id);
+                    groupBoxPanel.Height=countButtons*54+40;
+                    //groupBoxTests.Location = new Point(377, groupBoxPanel.Height + 78);
+                    groupBoxTests.Location = new Point(groupBoxTests.Location.X, groupBoxPanel.Bottom+10);
+
+                    //MessageBox.Show("Sample Name: " + button.Text + "\nID: " + samples.Id);
                 }
             }
 
         }
+        bool isClicked = true;
+        private void PanelButton_Click(object sender, EventArgs e)
+        {
+            if (sender is Button button)
+            {
+                // Retrieve the associated data from the sender's Tag property
+                if (button.Tag is Panels panels)
+                {
+                    if (isClicked)
+                    {
+                        button.ForeColor = Color.Black;
+                        button.BackColor = Color.WhiteSmoke;
+                        isClicked = !isClicked;
+                    }
+                    else if (!isClicked)
+                    {
+                        button.ForeColor = Color.DarkBlue;
+                        button.BackColor = Color.LightGray;
+                        isClicked = !isClicked;
+                    }
+                    var tests = orders.GetTests(panels.Id);
+                    int testButtonX = 11;
+                    int testButtonY = 35;
+                    int testCount = 0;
+                    int countButtons = 0;
+                    groupBoxTests.Controls.Clear();
+                    foreach (var test in tests)
+                    {
+                        Button testButton = new Button();
+                        testButton.Tag = test;
+                        testButton.Click += TestButton_Click;
+                        testButton.Text = test.TestName;
+                        testButton.Size = new Size(270, 42);
+                        testButton.BackColor = Color.WhiteSmoke;
+                        testButton.Font = new Font("Times New Roman", 14.25F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+                        testButton.Location = new Point(testButtonX, testButtonY);
+                        testButtonX += 280;
+                        groupBoxTests.Controls.Add(testButton);
+                        testCount++;
+                        if (testCount % 4 == 0)
+                        {
+                            testButtonX = 11;
+                            testButtonY += 54;
+                            countButtons++; 
+                        }
+                    }
+                    if (tests.Count % 4 != 0)
+                    {
+                        countButtons += 1;
+                    }
+                    groupBoxTests.Height = countButtons* 54+40;
+                    //MessageBox.Show("Sample Name: " + button.Text + "\nID: " + samples.Id);
+                
+            }
+            }
+        }
 
-
-
-
+        private void TestButton_Click(object sender, EventArgs e)
+        {
+            if (sender is Button button)
+            {
+                // Retrieve the associated data from the sender's Tag property
+                if (button.Tag is Tests test)
+                {
+                    MessageBox.Show("Test Name: " + button.Text + "\nID: " + test.Id + "\nType: " + test.TestType);
+                }
+            }
+        }
     }
 }
 #endregion
