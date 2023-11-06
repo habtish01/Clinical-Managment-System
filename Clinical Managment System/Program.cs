@@ -16,7 +16,9 @@ namespace Clinical_Managment_System
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ClinicalManagmentSystemForm());
+            //Application.Run(new ClinicalManagmentSystemForm());
+            Application.Run(new HomeClinicalSystem());
+            //Application.Run(new InPatient_DashboardForm());
         }
     }
 }

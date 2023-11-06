@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevExpress.XtraEditors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,11 +20,40 @@ namespace Clinical_Managment_System.Models
         public int Id { get; set; } 
         public int SampleId { get; set; }    
         public string PanelName { get; set; }
+        public bool isClicked { get; set; } = true;
     }
     public class Tests{
         public int Id { get; set; }
         public int PanelId { get; set; }
         public string TestName { get; set; }
         public string TestType { get; set; }
+    }
+
+    public class SampleElements
+    {
+       
+        public int SampleId { get; set; }
+        public int PanelId { get; set; }
+        public int TestId { get; set; }
+        public string PanelName { get; set; }
+        public string TestName { get; set; }
+        public string TestType { get; set; }
+       
+        public bool isClicked { get; set; } = true;
+    }
+
+    public class LabOrderExtended
+    {
+        public int PatientId { get; set; }
+        public DateTime Date { get; set; }
+        public int UserId { get; set; }
+
+    }
+
+
+    public class ListofButtons
+    {
+        public SimpleButton TestButton { get; set; }
+        public int Id { get; set; }
     }
 }

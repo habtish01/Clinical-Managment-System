@@ -29,14 +29,14 @@ namespace Clinical_Managment_System.Data_Access_Layer
             {
                 PatientModel model = new PatientModel
                 {
-                    Id = reader["Id"].ToString(),
-                    FirstName = reader["first_name"].ToString(),
-                    MiddleName = reader["middile_name"].ToString(),
-                    LastName = reader["last_name"].ToString(),
-                    Gender = reader["gender"].ToString(),
-                    Age = int.Parse(reader["age"].ToString()),
-                    PhoneNumber = reader["phone"].ToString(),
-                    Date = DateTime.Parse(reader["date_registered"].ToString())
+                    ID = reader["Id"].ToString(),
+                    FirstName = reader["first_name"].ToString().Trim(),
+                    MiddleName = reader["middile_name"].ToString().Trim(),
+                    LastName = reader["last_name"].ToString().Trim(),
+                    Gender = reader["gender"].ToString().Trim(),
+                    Age = int.Parse(reader["age"].ToString().Trim()),
+                    PhoneNumber = reader["phone"].ToString().Trim(),
+                    Date = DateTime.Parse(reader["date_registered"].ToString().Trim())
 
                 };
                 patients.Add(model);

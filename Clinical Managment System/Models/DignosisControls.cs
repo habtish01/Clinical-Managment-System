@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevExpress.XtraEditors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace Clinical_Managment_System.Models
 {
     public class Controls
     {
-        public ComboBox DiseasesType { get; set; }
+        public SearchLookUpEdit DiseasesType { get; set; }
         public CheckBox Primary { get; set; }
         public CheckBox Secondary { get; set; }
         public CheckBox Confirmed { get; set; }

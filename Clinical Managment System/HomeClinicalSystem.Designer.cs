@@ -30,8 +30,21 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HomeClinicalSystem));
             this.homePanel = new System.Windows.Forms.Panel();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.footerPanel = new System.Windows.Forms.Panel();
+            this.btnPrevious = new DevExpress.XtraEditors.SimpleButton();
+            this.txtPageNumber = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.btnNext = new DevExpress.XtraEditors.SimpleButton();
+            this.panelHomePage = new System.Windows.Forms.Panel();
+            this.HomeControl = new DevExpress.XtraGrid.GridControl();
+            this.layoutViewHomeView = new DevExpress.XtraGrid.Views.Layout.LayoutView();
+            this.layoutViewCard1 = new DevExpress.XtraGrid.Views.Layout.LayoutViewCard();
             this.panelList = new System.Windows.Forms.Panel();
+            this.btnBackHome = new DevExpress.XtraEditors.SimpleButton();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtSearch = new System.Windows.Forms.TextBox();
+            this.btnSearchPatient = new DevExpress.XtraEditors.SimpleButton();
             this.label1 = new System.Windows.Forms.Label();
             this.HeaderPanel = new System.Windows.Forms.Panel();
             this.btnExit = new DevExpress.XtraEditors.SimpleButton();
@@ -39,60 +52,239 @@
             this.LogoName = new System.Windows.Forms.Label();
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.pictureBoxLogedUser = new System.Windows.Forms.PictureBox();
-            this.footerPanel = new System.Windows.Forms.Panel();
-            this.label15 = new System.Windows.Forms.Label();
-            this.btnNext = new DevExpress.XtraEditors.SimpleButton();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtPageNumber = new System.Windows.Forms.TextBox();
             this.homePanel.SuspendLayout();
+            this.footerPanel.SuspendLayout();
+            this.panelHomePage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.HomeControl)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutViewHomeView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutViewCard1)).BeginInit();
             this.panelList.SuspendLayout();
             this.HeaderPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogedUser)).BeginInit();
-            this.footerPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // homePanel
             // 
-            this.homePanel.Controls.Add(this.txtPageNumber);
-            this.homePanel.Controls.Add(this.label2);
-            this.homePanel.Controls.Add(this.btnNext);
             this.homePanel.Controls.Add(this.footerPanel);
-            this.homePanel.Controls.Add(this.panel1);
+            this.homePanel.Controls.Add(this.panelHomePage);
             this.homePanel.Controls.Add(this.panelList);
             this.homePanel.Controls.Add(this.HeaderPanel);
             this.homePanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.homePanel.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.homePanel.Location = new System.Drawing.Point(0, 0);
+            this.homePanel.Margin = new System.Windows.Forms.Padding(4);
             this.homePanel.Name = "homePanel";
-            this.homePanel.Size = new System.Drawing.Size(1532, 872);
+            this.homePanel.Size = new System.Drawing.Size(1942, 884);
             this.homePanel.TabIndex = 1;
             // 
-            // panel1
+            // footerPanel
             // 
-            this.panel1.Location = new System.Drawing.Point(130, 178);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1356, 538);
-            this.panel1.TabIndex = 3;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            this.footerPanel.BackColor = System.Drawing.Color.LightGray;
+            this.footerPanel.Controls.Add(this.btnPrevious);
+            this.footerPanel.Controls.Add(this.txtPageNumber);
+            this.footerPanel.Controls.Add(this.label15);
+            this.footerPanel.Controls.Add(this.label2);
+            this.footerPanel.Controls.Add(this.btnNext);
+            this.footerPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.footerPanel.Location = new System.Drawing.Point(0, 794);
+            this.footerPanel.Margin = new System.Windows.Forms.Padding(4);
+            this.footerPanel.Name = "footerPanel";
+            this.footerPanel.Size = new System.Drawing.Size(1942, 90);
+            this.footerPanel.TabIndex = 23;
+            // 
+            // btnPrevious
+            // 
+            this.btnPrevious.Appearance.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPrevious.Appearance.Options.UseFont = true;
+            this.btnPrevious.Location = new System.Drawing.Point(1635, 46);
+            this.btnPrevious.Margin = new System.Windows.Forms.Padding(4);
+            this.btnPrevious.Name = "btnPrevious";
+            this.btnPrevious.Size = new System.Drawing.Size(100, 32);
+            this.btnPrevious.TabIndex = 27;
+            this.btnPrevious.Text = "Previous";
+            // 
+            // txtPageNumber
+            // 
+            this.txtPageNumber.Location = new System.Drawing.Point(1739, 46);
+            this.txtPageNumber.Margin = new System.Windows.Forms.Padding(4);
+            this.txtPageNumber.Name = "txtPageNumber";
+            this.txtPageNumber.Size = new System.Drawing.Size(67, 30);
+            this.txtPageNumber.TabIndex = 26;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.ForeColor = System.Drawing.Color.LimeGreen;
+            this.label15.Location = new System.Drawing.Point(607, 32);
+            this.label15.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(658, 26);
+            this.label15.TabIndex = 15;
+            this.label15.Text = "@CopyWrite Heal Aafrica Health City S.C. All Right Reserved";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(1541, 54);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(59, 23);
+            this.label2.TabIndex = 25;
+            this.label2.Text = "Page:";
+            // 
+            // btnNext
+            // 
+            this.btnNext.Appearance.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNext.Appearance.Options.UseFont = true;
+            this.btnNext.Location = new System.Drawing.Point(1811, 44);
+            this.btnNext.Margin = new System.Windows.Forms.Padding(4);
+            this.btnNext.Name = "btnNext";
+            this.btnNext.Size = new System.Drawing.Size(100, 32);
+            this.btnNext.TabIndex = 24;
+            this.btnNext.Text = "Next";
+            // 
+            // panelHomePage
+            // 
+            this.panelHomePage.Controls.Add(this.HomeControl);
+            this.panelHomePage.Location = new System.Drawing.Point(65, 190);
+            this.panelHomePage.Margin = new System.Windows.Forms.Padding(4);
+            this.panelHomePage.Name = "panelHomePage";
+            this.panelHomePage.Size = new System.Drawing.Size(1939, 729);
+            this.panelHomePage.TabIndex = 3;
+            // 
+            // HomeControl
+            // 
+            this.HomeControl.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.HomeControl.Location = new System.Drawing.Point(0, 0);
+            this.HomeControl.MainView = this.layoutViewHomeView;
+            this.HomeControl.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.HomeControl.Name = "HomeControl";
+            this.HomeControl.Size = new System.Drawing.Size(1939, 722);
+            this.HomeControl.TabIndex = 0;
+            this.HomeControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.layoutViewHomeView});
+            this.HomeControl.Click += new System.EventHandler(this.HomeControl_Click);
+            // 
+            // layoutViewHomeView
+            // 
+            this.layoutViewHomeView.Appearance.Card.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.layoutViewHomeView.Appearance.Card.BorderColor = System.Drawing.Color.Blue;
+            this.layoutViewHomeView.Appearance.Card.Font = new System.Drawing.Font("Times New Roman", 10.8F, System.Drawing.FontStyle.Bold);
+            this.layoutViewHomeView.Appearance.Card.ForeColor = System.Drawing.Color.White;
+            this.layoutViewHomeView.Appearance.Card.Options.UseBackColor = true;
+            this.layoutViewHomeView.Appearance.Card.Options.UseBorderColor = true;
+            this.layoutViewHomeView.Appearance.Card.Options.UseFont = true;
+            this.layoutViewHomeView.Appearance.Card.Options.UseForeColor = true;
+            this.layoutViewHomeView.Appearance.FieldCaption.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.layoutViewHomeView.Appearance.FieldCaption.Options.UseFont = true;
+            this.layoutViewHomeView.Appearance.FieldValue.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.layoutViewHomeView.Appearance.FieldValue.Options.UseFont = true;
+            this.layoutViewHomeView.AppearancePrint.Card.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.layoutViewHomeView.AppearancePrint.Card.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.layoutViewHomeView.AppearancePrint.Card.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold);
+            this.layoutViewHomeView.AppearancePrint.Card.ForeColor = System.Drawing.Color.White;
+            this.layoutViewHomeView.AppearancePrint.Card.Options.UseBackColor = true;
+            this.layoutViewHomeView.AppearancePrint.Card.Options.UseBorderColor = true;
+            this.layoutViewHomeView.AppearancePrint.Card.Options.UseFont = true;
+            this.layoutViewHomeView.AppearancePrint.Card.Options.UseForeColor = true;
+            this.layoutViewHomeView.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
+            this.layoutViewHomeView.CardMinSize = new System.Drawing.Size(350, 20);
+            this.layoutViewHomeView.DetailHeight = 300;
+            this.layoutViewHomeView.GridControl = this.HomeControl;
+            this.layoutViewHomeView.Name = "layoutViewHomeView";
+            this.layoutViewHomeView.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.False;
+            this.layoutViewHomeView.OptionsBehavior.AllowDeleteRows = DevExpress.Utils.DefaultBoolean.False;
+            this.layoutViewHomeView.OptionsBehavior.AllowExpandCollapse = false;
+            this.layoutViewHomeView.OptionsBehavior.Editable = false;
+            this.layoutViewHomeView.OptionsBehavior.ReadOnly = true;
+            this.layoutViewHomeView.OptionsCustomization.UseAdvancedRuntimeCustomization = true;
+            this.layoutViewHomeView.OptionsLayout.StoreAllOptions = true;
+            this.layoutViewHomeView.OptionsLayout.StoreAppearance = true;
+            this.layoutViewHomeView.OptionsView.ShowCardCaption = false;
+            this.layoutViewHomeView.OptionsView.ShowCardExpandButton = false;
+            this.layoutViewHomeView.OptionsView.ShowCardLines = false;
+            this.layoutViewHomeView.OptionsView.ShowFieldHints = false;
+            this.layoutViewHomeView.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;
+            this.layoutViewHomeView.OptionsView.ShowHeaderPanel = false;
+            this.layoutViewHomeView.OptionsView.ViewMode = DevExpress.XtraGrid.Views.Layout.LayoutViewMode.MultiColumn;
+            this.layoutViewHomeView.TemplateCard = this.layoutViewCard1;
+            this.layoutViewHomeView.CardClick += new DevExpress.XtraGrid.Views.Layout.Events.CardClickEventHandler(this.layoutView1_CardClick);
+            // 
+            // layoutViewCard1
+            // 
+            this.layoutViewCard1.GroupBordersVisible = false;
+            this.layoutViewCard1.HeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.AfterText;
+            this.layoutViewCard1.Name = "layoutViewCard1";
             // 
             // panelList
             // 
             this.panelList.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.panelList.Controls.Add(this.btnBackHome);
+            this.panelList.Controls.Add(this.label3);
+            this.panelList.Controls.Add(this.txtSearch);
+            this.panelList.Controls.Add(this.btnSearchPatient);
             this.panelList.Controls.Add(this.label1);
             this.panelList.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelList.Location = new System.Drawing.Point(0, 105);
+            this.panelList.Location = new System.Drawing.Point(0, 129);
+            this.panelList.Margin = new System.Windows.Forms.Padding(4);
             this.panelList.Name = "panelList";
-            this.panelList.Size = new System.Drawing.Size(1532, 49);
+            this.panelList.Size = new System.Drawing.Size(1942, 60);
             this.panelList.TabIndex = 2;
+            // 
+            // btnBackHome
+            // 
+            this.btnBackHome.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnBackHome.ImageOptions.Image")));
+            this.btnBackHome.Location = new System.Drawing.Point(4, 11);
+            this.btnBackHome.Margin = new System.Windows.Forms.Padding(4);
+            this.btnBackHome.Name = "btnBackHome";
+            this.btnBackHome.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light;
+            this.btnBackHome.Size = new System.Drawing.Size(48, 41);
+            this.btnBackHome.TabIndex = 2;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.IndianRed;
+            this.label3.Location = new System.Drawing.Point(1615, -1);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(167, 16);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "(search by ID/Name/Phone)";
+            // 
+            // txtSearch
+            // 
+            this.txtSearch.Location = new System.Drawing.Point(1589, 16);
+            this.txtSearch.Margin = new System.Windows.Forms.Padding(4);
+            this.txtSearch.Multiline = true;
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(264, 36);
+            this.txtSearch.TabIndex = 0;
+            // 
+            // btnSearchPatient
+            // 
+            this.btnSearchPatient.Appearance.BackColor = System.Drawing.Color.Blue;
+            this.btnSearchPatient.Appearance.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSearchPatient.Appearance.Options.UseBackColor = true;
+            this.btnSearchPatient.Appearance.Options.UseFont = true;
+            this.btnSearchPatient.Location = new System.Drawing.Point(1863, 10);
+            this.btnSearchPatient.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSearchPatient.Name = "btnSearchPatient";
+            this.btnSearchPatient.Size = new System.Drawing.Size(119, 41);
+            this.btnSearchPatient.TabIndex = 1;
+            this.btnSearchPatient.Text = "Search";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(383, 13);
+            this.label1.Location = new System.Drawing.Point(236, 16);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(193, 22);
+            this.label1.Size = new System.Drawing.Size(243, 26);
             this.label1.TabIndex = 0;
             this.label1.Text = "List Of Active Patients";
             // 
@@ -106,20 +298,20 @@
             this.HeaderPanel.Controls.Add(this.pictureBoxLogedUser);
             this.HeaderPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.HeaderPanel.Location = new System.Drawing.Point(0, 0);
-            this.HeaderPanel.Margin = new System.Windows.Forms.Padding(2);
+            this.HeaderPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.HeaderPanel.Name = "HeaderPanel";
-            this.HeaderPanel.Size = new System.Drawing.Size(1532, 105);
+            this.HeaderPanel.Size = new System.Drawing.Size(1942, 129);
             this.HeaderPanel.TabIndex = 1;
             // 
             // btnExit
             // 
             this.btnExit.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnExit.ImageOptions.Image")));
             this.btnExit.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.TopCenter;
-            this.btnExit.Location = new System.Drawing.Point(1492, 2);
-            this.btnExit.Margin = new System.Windows.Forms.Padding(2);
+            this.btnExit.Location = new System.Drawing.Point(1989, 2);
+            this.btnExit.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnExit.Name = "btnExit";
             this.btnExit.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light;
-            this.btnExit.Size = new System.Drawing.Size(38, 32);
+            this.btnExit.Size = new System.Drawing.Size(51, 39);
             this.btnExit.TabIndex = 9;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
@@ -127,10 +319,9 @@
             // 
             this.LoggedUser.AutoSize = true;
             this.LoggedUser.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoggedUser.Location = new System.Drawing.Point(146, 21);
-            this.LoggedUser.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.LoggedUser.Location = new System.Drawing.Point(195, 26);
             this.LoggedUser.Name = "LoggedUser";
-            this.LoggedUser.Size = new System.Drawing.Size(153, 21);
+            this.LoggedUser.Size = new System.Drawing.Size(199, 27);
             this.LoggedUser.TabIndex = 6;
             this.LoggedUser.Text = "Habtamu Esubalew";
             // 
@@ -138,20 +329,19 @@
             // 
             this.LogoName.AutoSize = true;
             this.LogoName.Font = new System.Drawing.Font("Times New Roman", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LogoName.Location = new System.Drawing.Point(501, 57);
-            this.LogoName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.LogoName.Location = new System.Drawing.Point(668, 70);
             this.LogoName.Name = "LogoName";
-            this.LogoName.Size = new System.Drawing.Size(341, 24);
+            this.LogoName.Size = new System.Drawing.Size(451, 31);
             this.LogoName.TabIndex = 7;
             this.LogoName.Text = "Heal Africa Health City EMR System";
             // 
             // pictureBoxLogo
             // 
             this.pictureBoxLogo.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxLogo.Image")));
-            this.pictureBoxLogo.Location = new System.Drawing.Point(586, 2);
-            this.pictureBoxLogo.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBoxLogo.Location = new System.Drawing.Point(781, 2);
+            this.pictureBoxLogo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBoxLogo.Name = "pictureBoxLogo";
-            this.pictureBoxLogo.Size = new System.Drawing.Size(127, 52);
+            this.pictureBoxLogo.Size = new System.Drawing.Size(169, 64);
             this.pictureBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxLogo.TabIndex = 8;
             this.pictureBoxLogo.TabStop = false;
@@ -159,83 +349,39 @@
             // pictureBoxLogedUser
             // 
             this.pictureBoxLogedUser.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxLogedUser.Image")));
-            this.pictureBoxLogedUser.Location = new System.Drawing.Point(49, 10);
-            this.pictureBoxLogedUser.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBoxLogedUser.Location = new System.Drawing.Point(65, 12);
+            this.pictureBoxLogedUser.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBoxLogedUser.Name = "pictureBoxLogedUser";
-            this.pictureBoxLogedUser.Size = new System.Drawing.Size(84, 83);
+            this.pictureBoxLogedUser.Size = new System.Drawing.Size(112, 102);
             this.pictureBoxLogedUser.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxLogedUser.TabIndex = 5;
             this.pictureBoxLogedUser.TabStop = false;
             // 
-            // footerPanel
-            // 
-            this.footerPanel.BackColor = System.Drawing.Color.LightGray;
-            this.footerPanel.Controls.Add(this.label15);
-            this.footerPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.footerPanel.Location = new System.Drawing.Point(0, 799);
-            this.footerPanel.Name = "footerPanel";
-            this.footerPanel.Size = new System.Drawing.Size(1532, 73);
-            this.footerPanel.TabIndex = 23;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.ForeColor = System.Drawing.Color.LimeGreen;
-            this.label15.Location = new System.Drawing.Point(455, 26);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(522, 22);
-            this.label15.TabIndex = 15;
-            this.label15.Text = "@CopyWrite Heal Aafrica Health City S.C. All Right Reserved";
-            // 
-            // btnNext
-            // 
-            this.btnNext.Appearance.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNext.Appearance.Options.UseFont = true;
-            this.btnNext.Location = new System.Drawing.Point(1325, 738);
-            this.btnNext.Name = "btnNext";
-            this.btnNext.Size = new System.Drawing.Size(75, 26);
-            this.btnNext.TabIndex = 24;
-            this.btnNext.Text = "Next";
-            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(1205, 745);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(47, 19);
-            this.label2.TabIndex = 25;
-            this.label2.Text = "Page:";
-            // 
-            // txtPageNumber
-            // 
-            this.txtPageNumber.Location = new System.Drawing.Point(1258, 738);
-            this.txtPageNumber.Name = "txtPageNumber";
-            this.txtPageNumber.Size = new System.Drawing.Size(61, 26);
-            this.txtPageNumber.TabIndex = 26;
-            // 
             // HomeClinicalSystem
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1532, 872);
+            this.ClientSize = new System.Drawing.Size(1942, 884);
             this.Controls.Add(this.homePanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "HomeClinicalSystem";
             this.Text = "HomeClinicalSystem";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.HomeClinicalSystem_Load);
             this.homePanel.ResumeLayout(false);
-            this.homePanel.PerformLayout();
+            this.footerPanel.ResumeLayout(false);
+            this.footerPanel.PerformLayout();
+            this.panelHomePage.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.HomeControl)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutViewHomeView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutViewCard1)).EndInit();
             this.panelList.ResumeLayout(false);
             this.panelList.PerformLayout();
             this.HeaderPanel.ResumeLayout(false);
             this.HeaderPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogedUser)).EndInit();
-            this.footerPanel.ResumeLayout(false);
-            this.footerPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -251,11 +397,19 @@
         private System.Windows.Forms.PictureBox pictureBoxLogedUser;
         private System.Windows.Forms.Panel panelList;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panelHomePage;
         private System.Windows.Forms.Panel footerPanel;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TextBox txtPageNumber;
         private System.Windows.Forms.Label label2;
         private DevExpress.XtraEditors.SimpleButton btnNext;
+        private DevExpress.XtraEditors.SimpleButton btnPrevious;
+        private System.Windows.Forms.TextBox txtSearch;
+        private DevExpress.XtraEditors.SimpleButton btnSearchPatient;
+        private System.Windows.Forms.Label label3;
+        private DevExpress.XtraEditors.SimpleButton btnBackHome;
+        private DevExpress.XtraGrid.GridControl HomeControl;
+        private DevExpress.XtraGrid.Views.Layout.LayoutView layoutViewHomeView;
+        private DevExpress.XtraGrid.Views.Layout.LayoutViewCard layoutViewCard1;
     }
 }
