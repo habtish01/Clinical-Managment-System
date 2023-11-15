@@ -52,11 +52,12 @@ namespace Clinical_Managment_System
         bool checkStatus = true;
         Controls dignosisControl = new Controls();
         List<Controls> listControls = new List<Controls>();
-        List<Panel> dignosisPanel=new List<Panel>();    
+        List<Panel> dignosisPanel=new List<Panel>();
+        DevExpress.XtraGrid.GridControl gridControlConditionDisplay = new DevExpress.XtraGrid.GridControl();     
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ClinicalManagmentSystemForm));
         AppointmentDbContext dbContext = new AppointmentDbContext();
         List<DignosisConditionDetail> conditionDetails = new List<DignosisConditionDetail>();
-        #region
+        
 
         public ClinicalManagmentSystemForm()
         {
@@ -91,10 +92,9 @@ namespace Clinical_Managment_System
             searchLookUpEditCondition.Properties.DisplayMember = "Description";
             searchLookUpEditCondition.Properties.PopulateViewColumns();
 
-            //Load Combo Box List For Disposition Type
-            //pass patient id as a parameter
+           
             //load patint id based on person id from patient table
-             //patientID = context.loadPatientId(patient.ID.ToString());
+            // patientID = context.loadPatientId(patient.ID.ToString());
             List<String> type = context.LoadDispositionType(patientID);
             dropDownSelectAction.DataSource = type;
 
@@ -113,46 +113,13 @@ namespace Clinical_Managment_System
 
         }
 
-        public int dateComparision(DateTime date)
-        {
-            DateTime today = DateTime.Today;
-            if (date.Date == today)
-                return 0;
-            else
-                return -date.CompareTo(today);
-        }
-        public void loadAppointmentFields()
-        {
-            var servicetypes = dbContext.getServiceType();
-            comboBoxServices.DataSource = servicetypes;
-            comboBoxServices.ValueMember = "id";
-            comboBoxServices.DisplayMember = "service_description";
-            
-            List<VisitLocation> visitLocation=dbContext.getVisitLocation();
-            comboBoxLocation.DataSource = visitLocation;
-            comboBoxLocation.DisplayMember= "description"; 
-            comboBoxLocation.ValueMember = "id";
+   
+        
 
+     
 
-        }
-        #region
-
-        public void createConsultationControls()
-        {
-            ControlsModelDbAcess controlsModelDb=new ControlsModelDbAcess();
-            var controls=controlsModelDb.getAllControls();
-
-
-        }
-
-        public void RefreshComboBoxListAfterSaved()
-        {
-                                      
-           
-            List<String> dispositionStatus = context.LoadDispositionType(patientID);
-            dropDownSelectAction.DataSource = dispositionStatus;
-        }
-
+       
+        #region Consultation
         private void btnSaveConsultation_Click(object sender, EventArgs e)
         {
             var note = richtxtConsultation.Text.Trim();
@@ -179,19 +146,37 @@ namespace Clinical_Managment_System
 
             }
         }
+        private void btnNewConsultation_Click(object sender, EventArgs e)
+        {
+            richtxtConsultation.Text = String.Empty;
+        }
 
+        private void richtxtConsultation_TextChanged(object sender, EventArgs e)
+        {
+            richtxtConsultation.BackColor = SystemColors.Window;
+        }
+        #endregion
+        #region Back and Exit Buttons
         private void btnExit_Click(object sender, EventArgs e)
         {
            Application.Exit();  
         }
 
-
-
-        private void description_TextChanged(object sender, EventArgs e)
+        private void btnBackHome_Click(object sender, EventArgs e)
         {
-            description.BackColor=SystemColors.Window;
+            HomeClinicalSystem homeClinicalSystem = new HomeClinicalSystem();
+            homeClinicalSystem.Show();
+        }
+        public void createConsultationControls()
+        {
+            ControlsModelDbAcess controlsModelDb = new ControlsModelDbAcess();
+            var controls = controlsModelDb.getAllControls();
+
+
         }
 
+         #endregion       
+        #region Dignosis
         private void btnSaveDiagnosis_Click(object sender, EventArgs e)
         {
             ///validation
@@ -306,11 +291,328 @@ namespace Clinical_Managment_System
             }
         }
 
+        bool btnDescriptionButton = true;
+        private void addDescription_Click(object sender, EventArgs e)
+        {
+            if (btnDescriptionButton)
+            {
+                diagnosisDescription.Visible = true;
+                descriptionTitle.Visible = true;
+                addDescription.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton4.ImageOptions.Image")));
+                paneldDignosis.Size = new Size(paneldDignosis.Width, 150);
+                btnDescriptionButton = !btnDescriptionButton;
 
+            }
+            else if (!btnDescriptionButton)
+            {
+                diagnosisDescription.Visible = false;
+                descriptionTitle.Visible = false;
+                addDescription.Image = ((System.Drawing.Image)(resources.GetObject("addDescription.ImageOptions.Image")));
+                paneldDignosis.Size = new Size(paneldDignosis.Width, 70);
+                btnDescriptionButton = !btnDescriptionButton;
+
+            }
+
+        }
+        private void paneldDignosis_SizeChanged(object sender, EventArgs e)
+        {
+            var firstPanel = true;
+            int index = 0;
+            if (dignosisPanel.Count != 0)
+            {
+                foreach (var panel in dignosisPanel)
+                {
+
+                    if (firstPanel)
+                    {
+                        panel.Location = new Point(0, paneldDignosis.Location.Y + paneldDignosis.Height + 10);
+
+                        firstPanel = false;
+                        index++;
+                        continue;
+                    }
+
+                    panel.Location = new Point(0, dignosisPanel[index - 1].Location.Y + dignosisPanel[index - 1].Height + 10);
+
+                    index++;
+                }
+
+                panelDiagnosisCondition.Location = new Point(0, dignosisPanel[dignosisPanel.Count - 1].Location.Y +
+                    dignosisPanel[dignosisPanel.Count - 1].Height + 20);
+                gridControlConditionDisplay.Location = new Point(0, panelDiagnosisCondition.Location.Y + panelDiagnosisCondition.Height + 20);
+
+
+            }
+            else
+            {
+                panelDiagnosisCondition.Location = new Point(0, paneldDignosis.Location.Y + paneldDignosis.Height + 20);
+                gridControlConditionDisplay.Location = new Point(0, panelDiagnosisCondition.Location.Y + panelDiagnosisCondition.Height + 20);
+
+            }
+
+        }
+        private void DignosisPanelSizeChanged(object sender, EventArgs e)//for new panel
+        {
+            var firstPanel = true;
+            int index = 0;
+            foreach (var panel in dignosisPanel)
+            {
+                if (firstPanel)
+                {
+                    firstPanel = false;
+                    index++;
+                    continue;
+                }
+
+                panel.Location = new Point(0, dignosisPanel[index - 1].Location.Y + dignosisPanel[index - 1].Height + 10);
+                index++;
+            }
+            panelDiagnosisCondition.Location = new Point(0, dignosisPanel[dignosisPanel.Count - 1].Location.Y +
+                dignosisPanel[dignosisPanel.Count - 1].Height + 20);
+            gridControlConditionDisplay.Location = new Point(0, panelDiagnosisCondition.Location.Y + panelDiagnosisCondition.Height + 20);
+
+        }
+        private void addDignosis_Click(object sender, EventArgs e)
+        {
+            simpleButton2.Enabled = true;
+            Panel newPanel = new Panel();
+            newPanel.Size = new Size(1360, 80);
+            if (dignosisPanel.Count == 0)
+            {
+                newPanel.Location = new Point(0, paneldDignosis.Location.Y + paneldDignosis.Height + 10);
+            }
+            else
+            {
+                newPanel.Location = new Point(0, dignosisPanel[dignosisPanel.Count - 1].Location.Y + dignosisPanel[dignosisPanel.Count - 1].Height + 10);
+            }
+            panelDiagnosisCondition.Location = new Point(0, newPanel.Location.Y + newPanel.Height + 20);
+
+            // Adjust the location as needed
+            newPanel.BackColor = Color.FromArgb(240, 240, 240);
+            newPanel.SizeChanged += DignosisPanelSizeChanged;
+            dignosisPanel.Add(newPanel);
+            panelDignosis.Controls.Add(newPanel);
+            // Add the panel to the collection and the form
+            panelCollection.Add(newPanel);
+            Button button = new Button();
+            //button.Text = "Add";
+            button.Image = ((System.Drawing.Image)(resources.GetObject("addDescription.ImageOptions.Image")));
+            button.Location = new Point(1210, 9);
+            button.Size = new Size(51, 46);
+            button.BackColor = Color.White;
+            button.Click += new EventHandler(ButtonForEachPanel_Click);
+            newPanel.Controls.Add(button);
+
+            Button btn = new Button();
+            btn.Location = new Point(270, 18);
+            btn.Text = "Accept";
+            btn.Size = new Size(76, 32);
+            btn.BackColor = Color.WhiteSmoke;
+            btn.ForeColor = Color.Black;
+            btn.Click += new EventHandler(AcceptButtonForEachDiagnosis_Click);
+            btn.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+            newPanel.Controls.Add(btn);
+            //ConditionPanel.Controls.Add(newPanel);
+
+            dignosisControl.DiseasesType = new SearchLookUpEdit();
+            dignosisControl.DiseasesType.EditValue = 1;
+            dignosisControl.DiseasesType.Properties.DataSource = context.LoadDiseasesType();
+            dignosisControl.DiseasesType.Size = new Size(210, 28);
+            dignosisControl.DiseasesType.Location = new Point(40, 23);
+            dignosisControl.DiseasesType.Font = new Font("Times New Roman", 12.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            dignosisControl.DiseasesType.Properties.DisplayMember = "Description";
+            // dignosisControl.DiseasesType.Properties.ValueMember = "Id";
+            dignosisControl.DiseasesType.Properties.PopulateViewColumns();
+
+
+
+            dignosisControl.DiseasesType.TextChanged += DiseasesType_TextChanged;
+
+            dignosisControl.Primary = new CheckBox();
+            dignosisControl.Primary.Text = "Primary";
+            dignosisControl.Primary.Size = new Size(81, 23);
+            dignosisControl.Primary.Location = new Point(471, 23);
+            dignosisControl.Primary.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+            dignosisControl.Primary.CheckedChanged += primary_CheckedChanged;
+
+            dignosisControl.Secondary = new CheckBox();
+            dignosisControl.Secondary.Text = "Secondary";
+            dignosisControl.Secondary.Size = new Size(98, 23);
+            dignosisControl.Secondary.Location = new Point(556, 23);
+            dignosisControl.Secondary.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+            dignosisControl.Secondary.CheckedChanged += secondary_CheckedChanged;
+
+
+            dignosisControl.Confirmed = new CheckBox();
+            dignosisControl.Confirmed.Text = "Confirmed";
+            dignosisControl.Confirmed.Size = new Size(98, 23);
+            dignosisControl.Confirmed.Location = new Point(748, 16);
+            dignosisControl.Confirmed.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+            dignosisControl.Confirmed.CheckedChanged += confirmed_CheckedChanged;
+
+            dignosisControl.Persumed = new CheckBox();
+            dignosisControl.Persumed.Text = "Persumed";
+            dignosisControl.Persumed.Size = new Size(94, 23);
+            dignosisControl.Persumed.Location = new Point(850, 16);
+            dignosisControl.Persumed.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+            dignosisControl.Persumed.CheckedChanged += persumed_CheckedChanged;
+
+            dignosisControl.Sataus = new CheckBox();
+            dignosisControl.Sataus.Text = "InActive";
+            dignosisControl.Sataus.Size = new Size(85, 23);
+            dignosisControl.Sataus.Location = new Point(1092, 16);
+            dignosisControl.Sataus.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+
+            dignosisControl.DescriptionTitle = new Label();
+            dignosisControl.DescriptionTitle.Text = "Description(optional)";
+            dignosisControl.DescriptionTitle.Size = new Size(149, 19);
+            dignosisControl.DescriptionTitle.Location = new Point(68, 83);
+            dignosisControl.DescriptionTitle.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+
+            dignosisControl.Description = new RichTextBox();
+            dignosisControl.Description.Size = new Size(1098, 65);
+            dignosisControl.Description.Location = new Point(72, 97);
+            dignosisControl.Description.Font = new Font("Times New Roman", 15F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+
+
+            newPanel.Controls.Add(dignosisControl.DiseasesType);
+            newPanel.Controls.Add(dignosisControl.Primary);
+            newPanel.Controls.Add(dignosisControl.Secondary);
+            newPanel.Controls.Add(dignosisControl.Confirmed);
+            newPanel.Controls.Add(dignosisControl.Persumed);
+            newPanel.Controls.Add(dignosisControl.Sataus);
+            newPanel.Controls.Add(dignosisControl.DescriptionTitle);
+            newPanel.Controls.Add(dignosisControl.Description);
+
+
+
+            dignosisPanelX = dignosisPanelX + 190;
+
+            listControls.Add(dignosisControl);
+
+
+        }
+        private void description_TextChanged(object sender, EventArgs e)
+        {
+            description.BackColor = SystemColors.Window;
+        }
+        private void AcceptButtonForEachDiagnosis_Click(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+        }
+
+        bool btnDiagnosisDescriptionCount = true;
+        private void ButtonForEachPanel_Click(object sender, EventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            Panel parentPanel = (Panel)clickedButton.Parent;
+
+            if (btnDiagnosisDescriptionCount)
+            {
+                clickedButton.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton4.ImageOptions.Image")));
+                btnDiagnosisDescriptionCount = !btnDiagnosisDescriptionCount;
+                parentPanel.Size = new Size(parentPanel.Width, 180);
+                // parentPanel.Location=new Point()
+            }
+            else if (!btnDiagnosisDescriptionCount)
+            {
+                btnDiagnosisDescriptionCount = !btnDiagnosisDescriptionCount;
+                clickedButton.Image = ((System.Drawing.Image)(resources.GetObject("addDescription.ImageOptions.Image")));
+                parentPanel.Size = new Size(parentPanel.Width, 80);
+            }
+        }
+
+
+        private void simpleButton2_Click(object sender, EventArgs e)
+        {
+
+            if (panelCollection.Count > 0)
+            {
+                Panel lastPanel = panelCollection[panelCollection.Count - 1];
+                panelCollection.Remove(lastPanel);
+                // ConditionPanel.Controls.Remove(lastPanel);
+                dignosisPanel.Remove(lastPanel);
+                dignosisPanelX = dignosisPanelX - 190;
+                if (dignosisPanel.Count != 0)
+                {
+                    panelDiagnosisCondition.Location = new Point(0, dignosisPanel[dignosisPanel.Count - 1].Location.Y 
+                        + dignosisPanel[dignosisPanel.Count - 1].Height + 20);
+
+                }
+                else
+                {
+                    panelDiagnosisCondition.Location = new Point(0, paneldDignosis.Location.Y + paneldDignosis.Height + 10);
+
+                }
+
+            }
+
+        }
+
+
+
+        private void DiseasesType_TextChanged(object sender, EventArgs e)
+        {
+            foreach (var control in listControls)
+            {
+                control.DiseasesType.BackColor = SystemColors.Window;
+
+            }
+        }
+        private void primary_CheckedChanged(object sender, EventArgs e)
+        {
+            foreach (var control in listControls)
+            {
+                if (control.Primary.Checked)
+                {
+                    control.Secondary.Checked = false;
+                    control.Secondary.BackColor = SystemColors.Window;
+                }
+                control.Primary.BackColor = SystemColors.Window;
+            }
+        }
+
+        private void secondary_CheckedChanged(object sender, EventArgs e)
+        {
+            foreach (var control in listControls)
+            {
+                if (control.Secondary.Checked)
+                {
+                    control.Primary.Checked = false;
+                    control.Primary.BackColor = SystemColors.Window;
+                }
+                control.Secondary.BackColor = SystemColors.Window;
+            }
+        }
+        private void confirmed_CheckedChanged(object sender, EventArgs e)
+        {
+            foreach (var control in listControls)
+            {
+                if (control.Confirmed.Checked)
+                {
+                    control.Persumed.Checked = false;
+                    control.Persumed.BackColor = SystemColors.Window;
+                }
+                control.Confirmed.BackColor = SystemColors.Window;
+            }
+        }
+
+        private void persumed_CheckedChanged(object sender, EventArgs e)
+        {
+            foreach (var control in listControls)
+            {
+                if (control.Persumed.Checked)
+                {
+                    control.Confirmed.Checked = false;
+                    control.Confirmed.BackColor = SystemColors.Window;
+                }
+                control.Persumed.BackColor = SystemColors.Window;
+            }
+        }
 
         private void checkBoxprimary_CheckedChanged(object sender, EventArgs e)
         {
-            if(checkBoxprimary.Checked) 
+            if (checkBoxprimary.Checked)
             {
                 checkBoxSecondary.Checked = false;
                 checkBoxSecondary.BackColor = SystemColors.Window;
@@ -320,18 +622,18 @@ namespace Clinical_Managment_System
 
         private void checkBoxSecondary_CheckedChanged(object sender, EventArgs e)
         {
-            if(checkBoxSecondary.Checked)
+            if (checkBoxSecondary.Checked)
             {
                 checkBoxprimary.Checked = false;
-                checkBoxprimary.BackColor= SystemColors.Window; 
+                checkBoxprimary.BackColor = SystemColors.Window;
             }
-            checkBoxSecondary.BackColor = SystemColors.Window;  
+            checkBoxSecondary.BackColor = SystemColors.Window;
         }
 
         private void checkBoxConfirmed_CheckedChanged(object sender, EventArgs e)
         {
-            if(checkBoxConfirmed.Checked) 
-            { 
+            if (checkBoxConfirmed.Checked)
+            {
                 checkBoxPersumed.Checked = false;
                 checkBoxPersumed.BackColor = SystemColors.Window;
             }
@@ -340,31 +642,199 @@ namespace Clinical_Managment_System
 
         private void checkBoxPersumed_CheckedChanged(object sender, EventArgs e)
         {
-            if(checkBoxPersumed.Checked) 
-            { 
-                checkBoxConfirmed.Checked = false;  
-                checkBoxConfirmed.BackColor= SystemColors.Window;   
+            if (checkBoxPersumed.Checked)
+            {
+                checkBoxConfirmed.Checked = false;
+                checkBoxConfirmed.BackColor = SystemColors.Window;
             }
-            checkBoxPersumed.BackColor = SystemColors.Window;   
+            checkBoxPersumed.BackColor = SystemColors.Window;
         }
 
-       
+
 
         private void btnNewDiagnosis_Click(object sender, EventArgs e)
         {
             dropDownDiseases.Text = string.Empty;
             checkBoxprimary.Checked = false;
             checkBoxSecondary.Checked = false;
-            checkBoxPersumed.Checked= false;
-            checkBoxConfirmed.Checked= false;   
-            checkBoxStatus.Checked= false;
+            checkBoxPersumed.Checked = false;
+            checkBoxConfirmed.Checked = false;
+            checkBoxStatus.Checked = false;
         }
 
         private void dropDownDiseases_TextChanged(object sender, EventArgs e)
         {
-            dropDownDiseases.BackColor = SystemColors.Window;   
+            dropDownDiseases.BackColor = SystemColors.Window;
         }
-        #region Save Disposition
+        private void dropDownDiseases_EditValueChanged(object sender, EventArgs e)
+        {
+            dropDownDiseases.BackColor = Color.White;
+
+        }
+
+        bool btnConditionDescriptionAddChecker = true;
+        private void btnConditionDescriptionAdd_Click(object sender, EventArgs e)
+        {
+            if (btnConditionDescriptionAddChecker)
+            {
+                panelDiagnosisCondition.Size = new Size(panelDiagnosisCondition.Width, 185);
+                btnConditionDescriptionAdd.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton4.ImageOptions.Image")));
+                btnConditionDescriptionAddChecker = !btnConditionDescriptionAddChecker;
+                gridControlConditionDisplay.Location = new Point(0, panelDiagnosisCondition.Location.Y + panelDiagnosisCondition.Height + 10);
+
+
+            }
+            else if (!btnConditionDescriptionAddChecker)
+            {
+                panelDiagnosisCondition.Size = new Size(panelDiagnosisCondition.Width, 100);
+                btnConditionDescriptionAdd.Image = ((System.Drawing.Image)(resources.GetObject("btnConditionDescriptionAdd.ImageOptions.Image")));
+                btnConditionDescriptionAddChecker = !btnConditionDescriptionAddChecker;
+                gridControlConditionDisplay.Location = new Point(0, panelDiagnosisCondition.Location.Y + panelDiagnosisCondition.Height + 10);
+
+            }
+        }
+  
+        private void btnConditionAdd_Click(object sender, EventArgs e)
+        {
+            //validation
+            ComboxData data1 = searchLookUpEditCondition.EditValue as ComboxData;
+            if (data1 is null || data1.Id <= 1)
+            {
+                searchLookUpEditCondition.BackColor = Color.LightPink;
+                searchLookUpEditCondition.Focus();
+                return;
+            }
+            if (!(checkBoxActive.Checked || checkBoxInActive.Checked || checkBoxHistoryof.Checked))
+            {
+                checkBoxActive.BackColor = Color.LightPink;
+                checkBoxActive.Focus();
+                checkBoxInActive.BackColor = Color.LightPink;
+                checkBoxInActive.Focus();
+                checkBoxHistoryof.BackColor = Color.LightPink;
+                checkBoxHistoryof.Focus();
+                return;
+            }
+            if (string.IsNullOrEmpty(dateEditCondition.Text.Trim()))
+            {
+                dateEditCondition.BackColor = Color.LightPink;
+                dateEditCondition.Focus();
+            }
+            /*
+             * creating a modle data to crate the detail grid view
+             * and to save to the database
+             */
+
+            DignosisConditionDetail conditionDetail = new DignosisConditionDetail();
+            conditionDetail.Condition = searchLookUpEditCondition.Properties.GetDisplayText(searchLookUpEditCondition.EditValue);
+            conditionDetail.Status = "Active";
+            conditionDetail.Date = dateEditCondition.DateTime.Date;
+            conditionDetail.Note = richTextBoxConditionDescription.Text.Trim();
+            if (checkBoxActive.Checked)
+            {
+                conditionDetail.Action = "Active";
+
+            }
+            else if (checkBoxInActive.Checked)
+            {
+                conditionDetail.Action = "In Active";
+            }
+            else
+            {
+                conditionDetail.Action = "History Of";
+            }
+
+            conditionDetails.Add(conditionDetail);
+            //creating a grid view to show detail about patient conditions
+
+            GridView gridViewConditiondisplay = new GridView(gridControlConditionDisplay);
+            gridControlConditionDisplay.MainView = gridViewConditiondisplay;
+            gridControlConditionDisplay.Location = new Point(0, panelDiagnosisCondition.Location.Y + panelDiagnosisCondition.Height + 20);
+            gridControlConditionDisplay.Size = new Size(panelDiagnosisCondition.Width, 400);
+            gridViewConditiondisplay.OptionsBehavior.Editable = false;
+            //gridViewConditiondisplay.CustomRowCellEdit += gridViewConditiondisplay_CustomRowCellEdit;
+            gridViewConditiondisplay.PopulateColumns();
+            gridViewConditiondisplay.OptionsView.ShowGroupPanel = false;
+            gridViewConditiondisplay.Appearance.HeaderPanel.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+            gridViewConditiondisplay.Appearance.Row.Font = new Font("Times New Roman", 9F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+            gridViewConditiondisplay.Appearance.HeaderPanel.BackColor = Color.RoyalBlue;
+
+            gridControlConditionDisplay.DataSource = conditionDetails;
+            panelDignosis.Controls.Add(gridControlConditionDisplay);
+
+
+        }
+
+
+        private void panelDiagnosisControlBody_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+
+
+        private void btnAcceptDignosisDiseases_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void searchLookUpEditCondition_EditValueChanged(object sender, EventArgs e)
+        {
+            string displayMember = searchLookUpEditCondition.Properties.GetDisplayText(dropDownDiseases.EditValue);
+            searchLookUpEditCondition.BackColor = Color.White;
+
+        }
+
+        private void btnAcceptCondition_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBoxActive_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxActive.Checked)
+            {
+                checkBoxInActive.Checked = false;
+                checkBoxInActive.BackColor = Color.White;
+                checkBoxHistoryof.Checked = false;
+                checkBoxHistoryof.BackColor = Color.White;
+
+            }
+            checkBoxActive.BackColor = Color.White;
+        }
+
+        private void checkBoxInActive_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxInActive.Checked)
+            {
+                checkBoxActive.Checked = false;
+                checkBoxActive.BackColor = Color.White;
+                checkBoxHistoryof.Checked = false;
+                checkBoxHistoryof.BackColor = Color.White;
+
+            }
+            checkBoxInActive.BackColor = Color.White;
+        }
+
+        private void checkBoxHistoryof_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxHistoryof.Checked)
+            {
+                checkBoxInActive.Checked = false;
+                checkBoxInActive.BackColor = Color.White;
+                checkBoxActive.Checked = false;
+                checkBoxActive.BackColor = Color.White;
+
+            }
+            checkBoxHistoryof.BackColor = Color.White;
+
+        }
+
+        private void dateEditCondition_EditValueChanged(object sender, EventArgs e)
+        {
+            dateEditCondition.BackColor = Color.White;
+        }
+        #endregion
+        #region Disposition
         /*
          * outer by habtish
          * the method performs the following actions
@@ -446,349 +916,18 @@ namespace Clinical_Managment_System
            
 
         }
-        #endregion
+        public void RefreshComboBoxListAfterSaved()
+        {
+
+
+            List<String> dispositionStatus = context.LoadDispositionType(patientID);
+            dropDownSelectAction.DataSource = dispositionStatus;
+        }
         public void dropDownSelectAction_SelectedIndexChanged(object sender, EventArgs e)
         {
             dropDownSelectAction.BackColor= SystemColors.Window;
         }
-
-        private void btnNewConsultation_Click(object sender, EventArgs e)
-        {
-            richtxtConsultation.Text = String.Empty;
-        }
-
-        private void richtxtConsultation_TextChanged(object sender, EventArgs e)
-        {
-            richtxtConsultation.BackColor = SystemColors.Window;
-        }
-
-       
-
-        private void btnBackHome_Click(object sender, EventArgs e)
-        {
-            HomeClinicalSystem homeClinicalSystem = new HomeClinicalSystem();
-            homeClinicalSystem.Show();
-        }
-        #endregion
-
-        #region Diagnosis Part
-
-        bool btnDescriptionButton = true;
-        private void addDescription_Click(object sender, EventArgs e)
-        {
-            if (btnDescriptionButton)
-            {
-                diagnosisDescription.Visible = true;
-                descriptionTitle.Visible = true;
-                addDescription.Image= ((System.Drawing.Image)(resources.GetObject("simpleButton4.ImageOptions.Image")));
-                paneldDignosis.Size = new Size(paneldDignosis.Width, 150);
-                btnDescriptionButton = !btnDescriptionButton;
-              
-            }
-            else if (!btnDescriptionButton)
-            {
-                diagnosisDescription.Visible = false;
-                descriptionTitle.Visible = false;
-                addDescription.Image = ((System.Drawing.Image)(resources.GetObject("addDescription.ImageOptions.Image")));
-                paneldDignosis.Size = new Size(paneldDignosis.Width, 70);
-                btnDescriptionButton = !btnDescriptionButton;
-              
-            }
-
-        }
-        private void paneldDignosis_SizeChanged(object sender, EventArgs e)
-        {
-            var firstPanel = true;
-            int index = 0;
-            if (dignosisPanel.Count != 0)
-            {
-                foreach (var panel in dignosisPanel)
-                {
-
-                    if (firstPanel)
-                    {
-                       panel.Location = new Point(0, paneldDignosis.Location.Y + paneldDignosis.Height + 10);
-
-                        firstPanel = false;
-                        index++;
-                        continue;
-                    }
-
-                    panel.Location = new Point(0, dignosisPanel[index - 1].Location.Y + dignosisPanel[index - 1].Height + 10);
-
-                    index++;
-                }
-
-                panelDiagnosisCondition.Location = new Point(0, dignosisPanel[dignosisPanel.Count - 1].Location.Y +
-                    dignosisPanel[dignosisPanel.Count - 1].Height + 20);
-
-
-            }
-            else
-            {
-                panelDiagnosisCondition.Location = new Point(0, paneldDignosis.Location.Y + paneldDignosis.Height + 20);
-
-            }
-
-        }
-        private void DignosisPanelSizeChanged(object sender, EventArgs e)//for new panel
-        {
-            var firstPanel = true;
-            int index = 0;
-            foreach (var panel in dignosisPanel)
-            {
-                if (firstPanel)
-                {
-                    firstPanel=false;
-                    index++;
-                    continue;
-                }
-
-                panel.Location = new Point(0, dignosisPanel[index - 1].Location.Y + dignosisPanel[index - 1].Height + 10);
-                index++;
-            }
-            panelDiagnosisCondition.Location = new Point(0, dignosisPanel[dignosisPanel.Count - 1].Location.Y +
-                dignosisPanel[dignosisPanel.Count - 1].Height + 20);
-
-        }
-        private void addDignosis_Click(object sender, EventArgs e)
-        {
-            simpleButton2.Enabled = true;
-            Panel newPanel = new Panel();
-            newPanel.Size = new Size(1360, 80);
-            if (dignosisPanel.Count == 0)
-            {
-              newPanel.Location = new Point(0, paneldDignosis.Location.Y + paneldDignosis.Height + 10);
-            }
-            else
-            {
-               newPanel.Location=new Point(0, dignosisPanel[dignosisPanel.Count - 1].Location.Y + dignosisPanel[dignosisPanel.Count - 1].Height + 10);
-            }
-            panelDiagnosisCondition.Location= new Point(0, newPanel.Location.Y + newPanel.Height + 20);
-
-            // Adjust the location as needed
-            newPanel.BackColor = Color.FromArgb(240, 240, 240);
-            newPanel.SizeChanged += DignosisPanelSizeChanged;
-            dignosisPanel.Add(newPanel);
-            panelDignosis.Controls.Add(newPanel);
-            // Add the panel to the collection and the form
-            panelCollection.Add(newPanel);
-            Button button=new Button();
-            //button.Text = "Add";
-            button.Image= ((System.Drawing.Image)(resources.GetObject("addDescription.ImageOptions.Image")));
-            button.Location=new Point(1210, 9);
-            button.Size = new Size(51,46);
-            button.BackColor = Color.White;
-            button.Click += new EventHandler(ButtonForEachPanel_Click);
-            newPanel.Controls.Add(button);
-
-            Button btn=new Button();
-            btn.Location = new Point(270, 18);
-            btn.Text = "Accept";
-            btn.Size = new Size(76, 32);
-            btn.BackColor= Color.WhiteSmoke;
-            btn.ForeColor= Color.Black;
-            btn.Click += new EventHandler(AcceptButtonForEachDiagnosis_Click);    
-            btn.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
-            newPanel.Controls.Add(btn);
-            //ConditionPanel.Controls.Add(newPanel);
-
-            dignosisControl.DiseasesType = new SearchLookUpEdit();
-            dignosisControl.DiseasesType.EditValue = 1;
-            dignosisControl.DiseasesType.Properties.DataSource = context.LoadDiseasesType();
-            dignosisControl.DiseasesType.Size = new Size(210, 28);
-            dignosisControl.DiseasesType.Location = new Point(40, 23);
-            dignosisControl.DiseasesType.Font = new Font("Times New Roman", 12.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));      
-            dignosisControl.DiseasesType.Properties.DisplayMember = "Description";
-           // dignosisControl.DiseasesType.Properties.ValueMember = "Id";
-            dignosisControl.DiseasesType.Properties.PopulateViewColumns();  
-
-
-
-            dignosisControl.DiseasesType.TextChanged += DiseasesType_TextChanged;
-
-            dignosisControl.Primary = new CheckBox();
-            dignosisControl.Primary.Text = "Primary";
-            dignosisControl.Primary.Size = new Size(81, 23);
-            dignosisControl.Primary.Location = new Point(471, 23);
-            dignosisControl.Primary.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
-            dignosisControl.Primary.CheckedChanged += primary_CheckedChanged;
-
-            dignosisControl.Secondary = new CheckBox();
-            dignosisControl.Secondary.Text = "Secondary";
-            dignosisControl.Secondary.Size = new Size(98, 23);
-            dignosisControl.Secondary.Location = new Point(556, 23);
-            dignosisControl.Secondary.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
-            dignosisControl.Secondary.CheckedChanged += secondary_CheckedChanged;
-
-
-            dignosisControl.Confirmed = new CheckBox();
-            dignosisControl.Confirmed.Text = "Confirmed";
-            dignosisControl.Confirmed.Size = new Size(98, 23);
-            dignosisControl.Confirmed.Location = new Point(748, 16);
-            dignosisControl.Confirmed.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
-            dignosisControl.Confirmed.CheckedChanged += confirmed_CheckedChanged;
-
-            dignosisControl.Persumed = new CheckBox();
-            dignosisControl.Persumed.Text = "Persumed";
-            dignosisControl.Persumed.Size = new Size(94, 23);
-            dignosisControl.Persumed.Location = new Point(850, 16);
-            dignosisControl.Persumed.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
-            dignosisControl.Persumed.CheckedChanged += persumed_CheckedChanged;
-
-            dignosisControl.Sataus = new CheckBox();
-            dignosisControl.Sataus.Text = "InActive";
-            dignosisControl.Sataus.Size = new Size(85, 23);
-            dignosisControl.Sataus.Location = new Point(1092, 16);
-            dignosisControl.Sataus.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
-
-            dignosisControl.DescriptionTitle=new Label();
-            dignosisControl.DescriptionTitle.Text = "Description(optional)";
-            dignosisControl.DescriptionTitle.Size = new Size(149, 19);
-            dignosisControl.DescriptionTitle.Location = new Point(68, 83);
-            dignosisControl.DescriptionTitle.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
-
-            dignosisControl.Description = new RichTextBox();
-            dignosisControl.Description.Size = new Size(1098, 65);
-            dignosisControl.Description.Location = new Point(72, 97);
-            dignosisControl.Description.Font = new Font("Times New Roman", 15F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
-
-
-            newPanel.Controls.Add(dignosisControl.DiseasesType);
-            newPanel.Controls.Add(dignosisControl.Primary);
-            newPanel.Controls.Add(dignosisControl.Secondary);
-            newPanel.Controls.Add(dignosisControl.Confirmed);
-            newPanel.Controls.Add(dignosisControl.Persumed);
-            newPanel.Controls.Add(dignosisControl.Sataus);
-            newPanel.Controls.Add(dignosisControl.DescriptionTitle);
-            newPanel.Controls.Add(dignosisControl.Description);
-
-
-          
-            dignosisPanelX = dignosisPanelX + 190;
-            
-            listControls.Add(dignosisControl);  
-
-
-        }
-
-        private void AcceptButtonForEachDiagnosis_Click(object sender, EventArgs e)
-        {
-            //throw new NotImplementedException();
-        }
-
-        bool btnDiagnosisDescriptionCount = true;
-        private void ButtonForEachPanel_Click(object sender, EventArgs e)
-        {                   
-            Button clickedButton = (Button)sender;
-            Panel parentPanel = (Panel)clickedButton.Parent;
-
-            if (btnDiagnosisDescriptionCount)
-            {
-                clickedButton.Image= ((System.Drawing.Image)(resources.GetObject("simpleButton4.ImageOptions.Image")));
-                btnDiagnosisDescriptionCount = !btnDiagnosisDescriptionCount;
-                parentPanel.Size = new Size(parentPanel.Width, 180);
-               // parentPanel.Location=new Point()
-            }
-            else if (!btnDiagnosisDescriptionCount)
-            {
-                btnDiagnosisDescriptionCount = !btnDiagnosisDescriptionCount;
-                clickedButton.Image = ((System.Drawing.Image)(resources.GetObject("addDescription.ImageOptions.Image")));
-                parentPanel.Size = new Size(parentPanel.Width, 80);
-            }
-        }
-      
-
-        private void simpleButton2_Click(object sender, EventArgs e)
-        {
-
-            if (panelCollection.Count > 0)
-            {
-                Panel lastPanel = panelCollection[panelCollection.Count - 1];
-                panelCollection.Remove(lastPanel);
-               // ConditionPanel.Controls.Remove(lastPanel);
-                dignosisPanel.Remove(lastPanel);    
-                dignosisPanelX = dignosisPanelX - 190;
-                if (dignosisPanel.Count != 0)
-                {
-                    panelDiagnosisCondition.Location = new Point(0, dignosisPanel[dignosisPanel.Count - 1].Location.Y + dignosisPanel[dignosisPanel.Count - 1].Height + 20);
-
-                }
-                else
-                {
-                    panelDiagnosisCondition.Location = new Point(0, paneldDignosis.Location.Y + paneldDignosis.Height + 10);
-
-                }
-
-            }
-
-        }
-
-
-
-        private void DiseasesType_TextChanged(object sender, EventArgs e)
-        {
-            foreach (var control in listControls)
-            {
-                control.DiseasesType.BackColor = SystemColors.Window;
-
-            }
-        }
-        private void primary_CheckedChanged(object sender, EventArgs e)
-        {
-            foreach (var control in listControls)
-            {
-                if (control.Primary.Checked)
-                {
-                    control.Secondary.Checked = false;
-                    control.Secondary.BackColor = SystemColors.Window;
-                }
-                control.Primary.BackColor = SystemColors.Window;
-            }
-        }
-
-        private void secondary_CheckedChanged(object sender, EventArgs e)
-        {
-            foreach (var control in listControls)
-            {
-                if (control.Secondary.Checked)
-                {
-                    control.Primary.Checked = false;
-                    control.Primary.BackColor = SystemColors.Window;
-                }
-                control.Secondary.BackColor = SystemColors.Window;
-            }
-        }
-        private void confirmed_CheckedChanged(object sender, EventArgs e)
-        {
-            foreach (var control in listControls)
-            {
-                if (control.Confirmed.Checked)
-                {
-                    control.Persumed.Checked = false;
-                    control.Persumed.BackColor = SystemColors.Window;
-                }
-                control.Confirmed.BackColor = SystemColors.Window;
-            }
-        }
-
-        private void persumed_CheckedChanged(object sender, EventArgs e)
-        {
-            foreach (var control in listControls)
-            {
-                if (control.Persumed.Checked)
-                {
-                    control.Confirmed.Checked = false;
-                    control.Confirmed.BackColor = SystemColors.Window;
-                }
-                control.Persumed.BackColor = SystemColors.Window;
-            }
-        }
-        #endregion
-
-
-
-        ////////////////////////////Lab Order////////////////////////////////////////
+        #endregion       
         #region Lab Order
         public void createSamples()
         {
@@ -1081,12 +1220,7 @@ namespace Clinical_Managment_System
             }
         }
        
-        private void ButtonForEachLabel_Click(object sender, EventArgs e)
-        {
-          
-
-
-        }
+        
         private void simpleButton3_Click(object sender, EventArgs e)
         {
             panelRadiology.Visible = !panelRadiology.Visible;
@@ -1119,188 +1253,36 @@ namespace Clinical_Managment_System
 
             }
         }
-                   
-        #endregion
-
-        private void dropDownDiseases_EditValueChanged(object sender, EventArgs e)
-        {
-            dropDownDiseases.BackColor= Color.White;    
-          
-        }
-
-        bool btnConditionDescriptionAddChecker = true;
-        private void btnConditionDescriptionAdd_Click(object sender, EventArgs e)
-        {
-            if (btnConditionDescriptionAddChecker)
-            {
-                panelDiagnosisCondition.Size = new Size(panelDiagnosisCondition.Width, 185);
-                btnConditionDescriptionAdd.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton4.ImageOptions.Image")));
-                btnConditionDescriptionAddChecker = !btnConditionDescriptionAddChecker;
-                gridControlConditionDisplay.Location = new Point(0, panelDiagnosisCondition.Location.Y + panelDiagnosisCondition.Height + 10);
-
-
-            }
-            else if(!btnConditionDescriptionAddChecker) 
-            {
-                panelDiagnosisCondition.Size = new Size(panelDiagnosisCondition.Width, 100);
-                btnConditionDescriptionAdd.Image= ((System.Drawing.Image)(resources.GetObject("btnConditionDescriptionAdd.ImageOptions.Image")));
-                btnConditionDescriptionAddChecker = !btnConditionDescriptionAddChecker;
-                gridControlConditionDisplay.Location = new Point(0, panelDiagnosisCondition.Location.Y + panelDiagnosisCondition.Height + 10);
-
-            }
-        }
-        DevExpress.XtraGrid.GridControl gridControlConditionDisplay = new DevExpress.XtraGrid.GridControl();
-       
-
-        private void btnConditionAdd_Click(object sender, EventArgs e)
-        {
-            //validation
-            ComboxData data1 = searchLookUpEditCondition.EditValue as ComboxData;
-            if (data1 is null || data1.Id <= 1)
-            {
-                searchLookUpEditCondition.BackColor = Color.LightPink;
-                searchLookUpEditCondition.Focus();
-                return;
-            }
-            if (!(checkBoxActive.Checked || checkBoxInActive.Checked || checkBoxHistoryof.Checked))
-            {
-                checkBoxActive.BackColor = Color.LightPink;
-                checkBoxActive.Focus();
-                checkBoxInActive.BackColor = Color.LightPink;
-                checkBoxInActive.Focus();
-                checkBoxHistoryof.BackColor = Color.LightPink;
-                checkBoxHistoryof.Focus();  
-                return;
-            }
-            if (string.IsNullOrEmpty(dateEditCondition.Text.Trim()))
-            {
-                dateEditCondition.BackColor = Color.LightPink;  
-                dateEditCondition.Focus();
-            }
-            /*
-             * creating a modle data to crate the detail grid view
-             * and to save to the database
-             */
-
-            DignosisConditionDetail conditionDetail=new DignosisConditionDetail();
-            conditionDetail.Condition =searchLookUpEditCondition.Properties.GetDisplayText(searchLookUpEditCondition.EditValue);
-            conditionDetail.Status = "Active";
-            conditionDetail.Date= dateEditCondition.DateTime.Date;
-            conditionDetail.Note = richTextBoxConditionDescription.Text.Trim();
-            if (checkBoxActive.Checked)
-            {
-                conditionDetail.Action ="Active";
-              
-            }
-            else if(checkBoxInActive.Checked)
-            {
-                conditionDetail.Action = "In Active";
-            }
-            else
-            {
-                conditionDetail.Action = "History Of";
-            }
-
-            conditionDetails.Add(conditionDetail);  
-            //creating a grid view to show detail about patient conditions
-
-            DevExpress.XtraGrid.GridControl gridControlConditionDisplay = new DevExpress.XtraGrid.GridControl();                 
-            GridView gridViewConditiondisplay = new GridView(gridControlConditionDisplay);       
-            gridControlConditionDisplay.MainView = gridViewConditiondisplay;            
-            gridControlConditionDisplay.Location = new Point(0, panelDiagnosisCondition.Location.Y + panelDiagnosisCondition.Height + 10);
-            gridControlConditionDisplay.Size = new Size(panelDiagnosisCondition.Width , 200);
-            gridViewConditiondisplay.OptionsBehavior.Editable = false; 
-            //gridViewConditiondisplay.CustomRowCellEdit += gridViewConditiondisplay_CustomRowCellEdit;
-            gridViewConditiondisplay.PopulateColumns();
-            gridViewConditiondisplay.OptionsView.ShowGroupPanel = false;
-            gridViewConditiondisplay.Appearance.HeaderPanel.Font= new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
-            gridViewConditiondisplay.Appearance.Row.Font= new Font("Times New Roman", 9F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
-            gridViewConditiondisplay.Appearance.HeaderPanel.BackColor = Color.RoyalBlue;    
-            
-            gridControlConditionDisplay.DataSource = conditionDetails;
-            panelDignosis.Controls.Add(gridControlConditionDisplay);
-
-
-        }
-
-       
-        private void panelDiagnosisControlBody_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void DignosisPanel_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void btnAcceptDignosisDiseases_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void searchLookUpEditCondition_EditValueChanged(object sender, EventArgs e)
-        {
-            string displayMember = searchLookUpEditCondition.Properties.GetDisplayText(dropDownDiseases.EditValue);
-            searchLookUpEditCondition.BackColor = Color.White;
-
-        }
-
-        private void btnAcceptCondition_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void checkBoxActive_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxActive.Checked)
-            {
-                checkBoxInActive.Checked = false;
-                checkBoxInActive.BackColor = Color.White;   
-                checkBoxHistoryof.Checked = false; 
-                checkBoxHistoryof.BackColor = Color.White;  
-                
-            }
-            checkBoxActive.BackColor = Color.White; 
-        }
-
-        private void checkBoxInActive_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxInActive.Checked)
-            {
-                checkBoxActive.Checked = false;
-                checkBoxActive.BackColor = Color.White;
-                checkBoxHistoryof.Checked = false;
-                checkBoxHistoryof.BackColor = Color.White;
-
-            }
-            checkBoxInActive.BackColor = Color.White;
-        }
-
-        private void checkBoxHistoryof_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxHistoryof.Checked)
-            {
-                checkBoxInActive.Checked = false;
-                checkBoxInActive.BackColor = Color.White;
-                checkBoxActive.Checked = false;
-                checkBoxActive.BackColor = Color.White;
-
-            }
-            checkBoxHistoryof.BackColor = Color.White;
-
-        }
-
-        private void dateEditCondition_EditValueChanged(object sender, EventArgs e)
-        {
-            dateEditCondition.BackColor = Color.White;  
-        }
 
         private void btnOrderCancel_Click(object sender, EventArgs e)
         {
 
         }
 
+        #endregion
+        #region Appointment
+        public int dateComparision(DateTime date)
+        {
+            DateTime today = DateTime.Today;
+            if (date.Date == today)
+                return 0;
+            else
+                return -date.CompareTo(today);
+        }
+        public void loadAppointmentFields()
+        {
+            var servicetypes = dbContext.getServiceType();
+            comboBoxServices.DataSource = servicetypes;
+            comboBoxServices.ValueMember = "id";
+            comboBoxServices.DisplayMember = "service_description";
+
+            List<VisitLocation> visitLocation = dbContext.getVisitLocation();
+            comboBoxLocation.DataSource = visitLocation;
+            comboBoxLocation.DisplayMember = "description";
+            comboBoxLocation.ValueMember = "id";
+
+
+        }
         private void gridViewAppointmentdocument_RowStyle(object sender, RowStyleEventArgs e)
         {
 
@@ -1340,8 +1322,8 @@ namespace Clinical_Managment_System
 
             ServiceType selectedServiceType = (ServiceType)comboBoxServices.SelectedItem;
             var serviceTypeId = selectedServiceType.id;
-           
-            if (string.IsNullOrEmpty(comboBoxServices.Text.Trim()) || serviceTypeId<=1)
+
+            if (string.IsNullOrEmpty(comboBoxServices.Text.Trim()) || serviceTypeId <= 1)
             {
                 comboBoxServices.BackColor = Color.LightPink;
                 comboBoxServices.Focus();
@@ -1366,25 +1348,25 @@ namespace Clinical_Managment_System
                 appointmentNote.Focus();
                 return;
             }
-           
+
             AppointmmentDto appointmmentDto = new AppointmmentDto();
-            appointmmentDto.PatientId = "H-00002-2";
+            appointmmentDto.PatientId = patient.ID.ToString();
 
             appointmmentDto.AppointmentTypeId = visitLocationId;
 
-          
-            appointmmentDto.VisitLocationId=(int)serviceTypeId;   
 
-            appointmmentDto.AppointmentDescription= appointmentNote.Text.Trim();
+            appointmmentDto.VisitLocationId = (int)serviceTypeId;
+
+            appointmmentDto.AppointmentDescription = appointmentNote.Text.Trim();
             appointmmentDto.Status = true;
             appointmmentDto.OrderedBy = "Habtish";
             appointmmentDto.AppointmentDate = appointmentDate.SelectionStart;
-            appointmmentDto.Remark= string.Empty;
+            appointmmentDto.Remark = string.Empty;
             var addAppointment = dbContext.addAppointment(appointmmentDto);
             if (addAppointment)
             {
 
-                MessageBox.Show("Appointment Added","Success",MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Appointment Added", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 //refresh the appoiontment list
                 var appointmentList = dbContext.loadAppointmentSummary();
                 appointmentList.OrderBy(x => dateComparision(x.OrderedDate)).ToList();
@@ -1398,16 +1380,6 @@ namespace Clinical_Managment_System
 
         }
 
-        private void comboBoxServices_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            comboBoxServices.BackColor=SystemColors.Window;
-        }
-
-        private void comboBoxLocation_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            comboBoxLocation.BackColor=SystemColors.Window; 
-        }
-
         private void appointmentDate_Click(object sender, EventArgs e)
         {
 
@@ -1415,13 +1387,25 @@ namespace Clinical_Managment_System
 
         private void appointmentDate_DateTimeChanged(object sender, EventArgs e)
         {
-            appointmentDate.BackColor=SystemColors.Window;  
+            appointmentDate.BackColor = SystemColors.Window;
         }
 
         private void appointmentNote_TextChanged(object sender, EventArgs e)
         {
-            appointmentNote.BackColor=SystemColors.Window;  
+            appointmentNote.BackColor = SystemColors.Window;
         }
+        private void comboBoxServices_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            comboBoxServices.BackColor = SystemColors.Window;
+        }
+
+        private void comboBoxLocation_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            comboBoxLocation.BackColor = SystemColors.Window;
+        }
+        #endregion
+        #region Medication
+
         bool drugOrderPanel = true;
         
         private void btnDrugOrder_Click(object sender, EventArgs e)
@@ -1441,6 +1425,12 @@ namespace Clinical_Managment_System
                 drugOrderPanel = !drugOrderPanel;
             }
         }
+        #endregion
+
+        private void panelDiagnosisCondition_SizeChanged(object sender, EventArgs e)
+        {
+            gridControlConditionDisplay.Location = new Point(0, panelDiagnosisCondition.Location.Y + panelDiagnosisCondition.Height + 20);
+
+        }
     }
 }
-#endregion
