@@ -5,6 +5,7 @@ using Clinical_Managment_System.Properties;
 using Clinical_Managment_System.Validation;
 using DevExpress.Utils.Extensions;
 using DevExpress.Utils.ScrollAnnotations;
+using DevExpress.XtraCharts.Design;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.Repository;
@@ -31,7 +32,7 @@ namespace Clinical_Managment_System
         
         DatabaseContext context=new DatabaseContext();
         ConsultationNote consultation=new ConsultationNote();
-        List<Panel> panelCollection = new List<Panel>();
+       // List<Panel> panelCollection = new List<Panel>();
         Orders orders = new Orders();
         List<Panels> panels = new List<Panels>();
         List<Panels> allpanelsinAllSamples = new List<Panels>();
@@ -108,6 +109,11 @@ namespace Clinical_Managment_System
             appointmentList.OrderBy(x=>dateComparision(x.OrderedDate)).ToList();    
             gridControlAppointmentDocument.DataSource = dbContext.loadAppointmentSummary();
             loadAppointmentFields();
+            ////make the default date value for patient condition date filed
+            dateEditCondition.DateTime = DateTime.Today;            
+            dateEditCondition.Properties.MaxValue = DateTime.Today;
+            appointmentDate.DateTime = DateTime.Today;
+            appointmentDate.Properties.MinValue = DateTime.Today;
             //////////////////////////Lab Order//////////
             createSamples();
 
@@ -392,8 +398,7 @@ namespace Clinical_Managment_System
             newPanel.SizeChanged += DignosisPanelSizeChanged;
             dignosisPanel.Add(newPanel);
             panelDignosis.Controls.Add(newPanel);
-            // Add the panel to the collection and the form
-            panelCollection.Add(newPanel);
+           
             Button button = new Button();
             //button.Text = "Add";
             button.Image = ((System.Drawing.Image)(resources.GetObject("addDescription.ImageOptions.Image")));
@@ -526,12 +531,14 @@ namespace Clinical_Managment_System
         private void simpleButton2_Click(object sender, EventArgs e)
         {
 
-            if (panelCollection.Count > 0)
+            if (dignosisPanel.Count > 0)
             {
-                Panel lastPanel = panelCollection[panelCollection.Count - 1];
-                panelCollection.Remove(lastPanel);
-                // ConditionPanel.Controls.Remove(lastPanel);
+               // Panel lastPanel = panelCollection[panelCollection.Count - 1];
+                Panel lastPanel = dignosisPanel[dignosisPanel.Count - 1];
+                //panelCollection.Remove(lastPanel);
+                 //ConditionPanel.Controls.Remove(lastPanel);
                 dignosisPanel.Remove(lastPanel);
+                panelDignosis.Controls.Remove(lastPanel);   
                 dignosisPanelX = dignosisPanelX - 190;
                 if (dignosisPanel.Count != 0)
                 {
@@ -542,7 +549,6 @@ namespace Clinical_Managment_System
                 else
                 {
                     panelDiagnosisCondition.Location = new Point(0, paneldDignosis.Location.Y + paneldDignosis.Height + 10);
-
                 }
 
             }
@@ -693,7 +699,7 @@ namespace Clinical_Managment_System
 
             }
         }
-  
+      
         private void btnConditionAdd_Click(object sender, EventArgs e)
         {
             //validation
@@ -726,7 +732,6 @@ namespace Clinical_Managment_System
 
             DignosisConditionDetail conditionDetail = new DignosisConditionDetail();
             conditionDetail.Condition = searchLookUpEditCondition.Properties.GetDisplayText(searchLookUpEditCondition.EditValue);
-            conditionDetail.Status = "Active";
             conditionDetail.Date = dateEditCondition.DateTime.Date;
             conditionDetail.Note = richTextBoxConditionDescription.Text.Trim();
             if (checkBoxActive.Checked)
@@ -760,6 +765,13 @@ namespace Clinical_Managment_System
 
             gridControlConditionDisplay.DataSource = conditionDetails;
             panelDignosis.Controls.Add(gridControlConditionDisplay);
+            //clearing filed values
+            searchLookUpEditCondition.EditValue = 1;
+            checkBoxActive.Checked = false;
+            checkBoxInActive.Checked = false;
+            checkBoxHistoryof.Checked = false;
+            richTextBoxConditionDescription.Text = string.Empty;
+            dateEditCondition.DateTime = DateTime.Today;
 
 
         }
@@ -770,7 +782,11 @@ namespace Clinical_Managment_System
 
         }
 
+        private void panelDiagnosisCondition_SizeChanged(object sender, EventArgs e)
+        {
+            gridControlConditionDisplay.Location = new Point(0, panelDiagnosisCondition.Location.Y + panelDiagnosisCondition.Height + 20);
 
+        }
 
         private void btnAcceptDignosisDiseases_Click(object sender, EventArgs e)
         {
@@ -1335,7 +1351,7 @@ namespace Clinical_Managment_System
                 comboBoxLocation.Focus();
                 return;
             }
-            if (string.IsNullOrEmpty(appointmentDate.SelectionStart.ToString()) || appointmentDate.SelectionStart.Date < DateTime.Today)
+            if (string.IsNullOrEmpty(appointmentDate.DateTime.ToString()) || appointmentDate.DateTime <= DateTime.Now)
             {
                 appointmentDate.BackColor = Color.LightPink;
                 appointmentDate.Focus();
@@ -1360,7 +1376,7 @@ namespace Clinical_Managment_System
             appointmmentDto.AppointmentDescription = appointmentNote.Text.Trim();
             appointmmentDto.Status = true;
             appointmmentDto.OrderedBy = "Habtish";
-            appointmmentDto.AppointmentDate = appointmentDate.SelectionStart;
+            appointmmentDto.AppointmentDate = appointmentDate.DateTime;
             appointmmentDto.Remark = string.Empty;
             var addAppointment = dbContext.addAppointment(appointmmentDto);
             if (addAppointment)
@@ -1425,12 +1441,14 @@ namespace Clinical_Managment_System
                 drugOrderPanel = !drugOrderPanel;
             }
         }
+
+
+
         #endregion
 
-        private void panelDiagnosisCondition_SizeChanged(object sender, EventArgs e)
+        private void simpleButton11_Click(object sender, EventArgs e)
         {
-            gridControlConditionDisplay.Location = new Point(0, panelDiagnosisCondition.Location.Y + panelDiagnosisCondition.Height + 20);
-
+            appointmentDate.DateTime= DateTime.Now;
         }
     }
 }

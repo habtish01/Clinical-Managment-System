@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Clinical_Managment_System.Data
 {
@@ -95,6 +96,7 @@ namespace Clinical_Managment_System.Data
             }
             catch (Exception ex)
             {
+                MessageBox.Show($"An unexpected error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             return false;   

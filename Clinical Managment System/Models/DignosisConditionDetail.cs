@@ -10,7 +10,6 @@ namespace Clinical_Managment_System.Models
     public class DignosisConditionDetail
     {
         public string Condition { get; set; }
-        public string Status { get; set; }
         public string Note { get; set; }
         public DateTime Date { get; set; }
         public string Action { get; set; }
