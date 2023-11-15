@@ -201,5 +201,11 @@ namespace Clinical_Managment_System
             clinicalSystem.Show();
             clinicalSystem.DisplayReceivedData();
         }
+
+        private void btnBackHome_Click(object sender, EventArgs e)
+        {
+            HomeClinicalSystem homeClinicalSystem= new HomeClinicalSystem();    
+            homeClinicalSystem.Show();  
+        }
     }
 }

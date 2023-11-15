@@ -112,10 +112,11 @@
     <Compile Include="ClinicalManagmentSystemForm.Designer.cs">
       <DependentUpon>ClinicalManagmentSystemForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Data Access Layer\ControlsModelDbAcess.cs" />
-    <Compile Include="Data Access Layer\DatabaseContext.cs" />
-    <Compile Include="Data Access Layer\AccessAllPateints.cs" />
-    <Compile Include="Data Access Layer\Orders.cs" />
+    <Compile Include="Data\Appointment.cs" />
+    <Compile Include="Data\ControlsModelDbAcess.cs" />
+    <Compile Include="Data\DatabaseContext.cs" />
+    <Compile Include="Data\AccessAllPateints.cs" />
+    <Compile Include="Data\Orders.cs" />
     <Compile Include="HomeClinicalSystem.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,6 +130,7 @@
       <DependentUpon>InPatient Dashboard.cs</DependentUpon>
     </Compile>
     <Compile Include="InPatient Dashboard\Diagnosis.cs" />
+    <Compile Include="Models\Appointment.cs" />
     <Compile Include="Models\ClinicalModels.cs" />
     <Compile Include="Models\ControlsModel.cs" />
     <Compile Include="Models\DignosisConditionDetail.cs" />

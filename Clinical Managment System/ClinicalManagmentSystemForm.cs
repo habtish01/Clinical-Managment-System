@@ -1,4 +1,5 @@
-﻿using Clinical_Managment_System.Data_Access_Layer;
+﻿using Clinical_Managment_System.Data;
+using Clinical_Managment_System.Data_Access_Layer;
 using Clinical_Managment_System.Models;
 using Clinical_Managment_System.Properties;
 using Clinical_Managment_System.Validation;
@@ -33,9 +34,11 @@ namespace Clinical_Managment_System
         List<Panel> panelCollection = new List<Panel>();
         Orders orders = new Orders();
         List<Panels> panels = new List<Panels>();
+        List<Panels> allpanelsinAllSamples = new List<Panels>();
         List<Tests> tests = new List<Tests>();
         List<SampleElements> sampleElements = new List<SampleElements>();
         List<SampleElements> allTests=new List<SampleElements>();
+        List<SampleElements> allTestsinAllSamples=new List<SampleElements>();
         List<Label> OrderedPanelsLabel= new List<Label>();
        
      
@@ -51,8 +54,8 @@ namespace Clinical_Managment_System
         List<Controls> listControls = new List<Controls>();
         List<Panel> dignosisPanel=new List<Panel>();    
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ClinicalManagmentSystemForm));
-
-
+        AppointmentDbContext dbContext = new AppointmentDbContext();
+        List<DignosisConditionDetail> conditionDetails = new List<DignosisConditionDetail>();
         #region
 
         public ClinicalManagmentSystemForm()
@@ -74,18 +77,24 @@ namespace Clinical_Managment_System
         private void ClinicalManagmentSystemForm_Load(object sender, EventArgs e)
         {
             //Load Combo Box List For Diseases Type
-           var comboList=context.LoadDiseasesType();
+           List<ComboxData> comboList=context.LoadDiseasesType();
            
             dropDownDiseases.Properties.DataSource=comboList;
             dropDownDiseases.EditValue = 1;
             dropDownDiseases.Properties.DisplayMember = "Description";
-            ////dropDownDiseases.Properties.ValueMember = "Id";
+            //dropDownDiseases.Properties.ValueMember = "Id";
             dropDownDiseases.Properties.PopulateViewColumns();
+            //////////////////////////////////////////////////
+            searchLookUpEditCondition.Properties.DataSource=comboList;
+            searchLookUpEditCondition.EditValue = 1;
+           // searchLookUpEditCondition.Properties.ValueMember = "Id";
+            searchLookUpEditCondition.Properties.DisplayMember = "Description";
+            searchLookUpEditCondition.Properties.PopulateViewColumns();
 
             //Load Combo Box List For Disposition Type
             //pass patient id as a parameter
             //load patint id based on person id from patient table
-             patientID = context.loadPatientId(patient.ID.ToString());
+             //patientID = context.loadPatientId(patient.ID.ToString());
             List<String> type = context.LoadDispositionType(patientID);
             dropDownSelectAction.DataSource = type;
 
@@ -93,11 +102,37 @@ namespace Clinical_Managment_System
            
             diagnosisDescription.Visible = false; 
             descriptionTitle.Visible = false;
-            
             //ende for the above action
-
+            ///appointment
+            var appointmentList = dbContext.loadAppointmentSummary();
+            appointmentList.OrderBy(x=>dateComparision(x.OrderedDate)).ToList();    
+            gridControlAppointmentDocument.DataSource = dbContext.loadAppointmentSummary();
+            loadAppointmentFields();
             //////////////////////////Lab Order//////////
             createSamples();
+
+        }
+
+        public int dateComparision(DateTime date)
+        {
+            DateTime today = DateTime.Today;
+            if (date.Date == today)
+                return 0;
+            else
+                return -date.CompareTo(today);
+        }
+        public void loadAppointmentFields()
+        {
+            var servicetypes = dbContext.getServiceType();
+            comboBoxServices.DataSource = servicetypes;
+            comboBoxServices.ValueMember = "id";
+            comboBoxServices.DisplayMember = "service_description";
+            
+            List<VisitLocation> visitLocation=dbContext.getVisitLocation();
+            comboBoxLocation.DataSource = visitLocation;
+            comboBoxLocation.DisplayMember= "description"; 
+            comboBoxLocation.ValueMember = "id";
+
 
         }
         #region
@@ -114,8 +149,8 @@ namespace Clinical_Managment_System
         {
                                       
            
-            List<String> type = context.LoadDispositionType(patientID);
-            dropDownSelectAction.DataSource = type;
+            List<String> dispositionStatus = context.LoadDispositionType(patientID);
+            dropDownSelectAction.DataSource = dispositionStatus;
         }
 
         private void btnSaveConsultation_Click(object sender, EventArgs e)
@@ -160,11 +195,10 @@ namespace Clinical_Managment_System
         private void btnSaveDiagnosis_Click(object sender, EventArgs e)
         {
             ///validation
-            if (Convert.ToInt32(dropDownDiseases.EditValue) <= 1)
+            if (!(dropDownDiseases.EditValue is ComboxData data) || data.Id <= 1)
             {
                 dropDownDiseases.BackColor = Color.LightPink;
                 dropDownDiseases.Focus();
-
                 return;
             }
             if (!(checkBoxprimary.Checked || checkBoxSecondary.Checked))
@@ -186,15 +220,9 @@ namespace Clinical_Managment_System
 
             foreach (Controls control in listControls)
             {
-            //    if (String.IsNullOrEmpty(control.DiseasesType.Text.Trim()))
-            //    {
-            //        control.DiseasesType.BackColor = Color.LightPink;
-            //        control.DiseasesType.Focus();
+                ComboxData data1=control.DiseasesType.EditValue as ComboxData;   
 
-            //        return;
-            //    }
-
-                if (Convert.ToInt32(control.DiseasesType.EditValue)<=1)
+                if (data1 is null || data1.Id<=1)
                 {
                     control.DiseasesType.BackColor = Color.LightPink;
                     control.DiseasesType.Focus();
@@ -225,11 +253,11 @@ namespace Clinical_Managment_System
                 }
                 /////action
                 DignosisModel dignosis1 = new DignosisModel();
-                object slectedItem1 =control.DiseasesType.EditValue;
+                ComboxData slectedItem1 =control.DiseasesType.EditValue as ComboxData;
            
 
                 dignosis1.Patient_Id = patientID;
-                dignosis1.DiseasisTypeId = Convert.ToInt32(slectedItem1);
+                dignosis1.DiseasisTypeId = slectedItem1.Id;
                 dignosis1.Order = control.Primary.Checked ? "Primary" : "Secondary";
                 dignosis1.Certainity = control.Persumed.Checked ? "Confirmed" : "Persumed";
                 dignosis1.Satus = control.Sataus.Checked ? "InActive" : "Active";
@@ -254,10 +282,10 @@ namespace Clinical_Managment_System
 
             /////action
             DignosisModel dignosis = new DignosisModel();
-            object diagnosisId = dropDownDiseases.EditValue;
+            ComboxData diagnosisId = dropDownDiseases.EditValue as ComboxData;
 
             dignosis.Patient_Id = patientID;
-            dignosis.DiseasisTypeId = Convert.ToInt32(diagnosisId);
+            dignosis.DiseasisTypeId = diagnosisId.Id;
             dignosis.Order = checkBoxprimary.Checked ? "Primary" : "Secondary";
             dignosis.Certainity = checkBoxPersumed.Checked ? "Confirmed" : "Persumed";
             dignosis.Satus = checkBoxStatus.Checked ? "InActive" : "Active";
@@ -280,7 +308,7 @@ namespace Clinical_Managment_System
 
 
 
-        private void checkBoxprimary_CheckedChanged_1(object sender, EventArgs e)
+        private void checkBoxprimary_CheckedChanged(object sender, EventArgs e)
         {
             if(checkBoxprimary.Checked) 
             {
@@ -290,7 +318,7 @@ namespace Clinical_Managment_System
             checkBoxprimary.BackColor = SystemColors.Window;
         }
 
-        private void checkBoxSecondary_CheckedChanged_1(object sender, EventArgs e)
+        private void checkBoxSecondary_CheckedChanged(object sender, EventArgs e)
         {
             if(checkBoxSecondary.Checked)
             {
@@ -300,7 +328,7 @@ namespace Clinical_Managment_System
             checkBoxSecondary.BackColor = SystemColors.Window;  
         }
 
-        private void checkBoxConfirmed_CheckedChanged_1(object sender, EventArgs e)
+        private void checkBoxConfirmed_CheckedChanged(object sender, EventArgs e)
         {
             if(checkBoxConfirmed.Checked) 
             { 
@@ -310,7 +338,7 @@ namespace Clinical_Managment_System
             checkBoxConfirmed.BackColor = SystemColors.Window;
         }
 
-        private void checkBoxPersumed_CheckedChanged_1(object sender, EventArgs e)
+        private void checkBoxPersumed_CheckedChanged(object sender, EventArgs e)
         {
             if(checkBoxPersumed.Checked) 
             { 
@@ -336,6 +364,15 @@ namespace Clinical_Managment_System
         {
             dropDownDiseases.BackColor = SystemColors.Window;   
         }
+        #region Save Disposition
+        /*
+         * outer by habtish
+         * the method performs the following actions
+         * 1-checks the selected action and checks for validation
+         * 2- checks the dispositon status of the patient
+         * saves the paties dispaosiition
+         * refresh the disposition status for that patient
+         */
 
         private void btnSaveDisposition_Click(object sender, EventArgs e)
         {
@@ -351,6 +388,7 @@ namespace Clinical_Managment_System
                 description.Focus();
                 return;
             }
+
             DispositionModel model=new DispositionModel();
             var dispositioType=dropDownSelectAction.Text.Trim();    
             var DispositionNote=description.Text.Trim();
@@ -408,11 +446,10 @@ namespace Clinical_Managment_System
            
 
         }
-
-        private void btnNewDisposition_Click(object sender, EventArgs e)
+        #endregion
+        public void dropDownSelectAction_SelectedIndexChanged(object sender, EventArgs e)
         {
-            dropDownSelectAction.Text = String.Empty;
-            description.Text = String.Empty;
+            dropDownSelectAction.BackColor= SystemColors.Window;
         }
 
         private void btnNewConsultation_Click(object sender, EventArgs e)
@@ -435,6 +472,7 @@ namespace Clinical_Managment_System
         #endregion
 
         #region Diagnosis Part
+
         bool btnDescriptionButton = true;
         private void addDescription_Click(object sender, EventArgs e)
         {
@@ -443,7 +481,7 @@ namespace Clinical_Managment_System
                 diagnosisDescription.Visible = true;
                 descriptionTitle.Visible = true;
                 addDescription.Image= ((System.Drawing.Image)(resources.GetObject("simpleButton4.ImageOptions.Image")));
-                paneldDignosis.Size = new Size(paneldDignosis.Width, 155);
+                paneldDignosis.Size = new Size(paneldDignosis.Width, 150);
                 btnDescriptionButton = !btnDescriptionButton;
               
             }
@@ -469,79 +507,70 @@ namespace Clinical_Managment_System
 
                     if (firstPanel)
                     {
-                       panel.Location = new Point(0, paneldDignosis.Location.Y + paneldDignosis.Height + 5);
-
+                       panel.Location = new Point(0, paneldDignosis.Location.Y + paneldDignosis.Height + 10);
 
                         firstPanel = false;
                         index++;
                         continue;
                     }
 
-                    panel.Location = new Point(0, dignosisPanel[index - 1].Location.Y + dignosisPanel[index - 1].Height + 5);
+                    panel.Location = new Point(0, dignosisPanel[index - 1].Location.Y + dignosisPanel[index - 1].Height + 10);
 
                     index++;
                 }
 
                 panelDiagnosisCondition.Location = new Point(0, dignosisPanel[dignosisPanel.Count - 1].Location.Y +
-                    dignosisPanel[dignosisPanel.Count - 1].Height + 10);
+                    dignosisPanel[dignosisPanel.Count - 1].Height + 20);
 
 
             }
             else
             {
-                panelDiagnosisCondition.Location = new Point(0, paneldDignosis.Location.Y + paneldDignosis.Height + 10);
+                panelDiagnosisCondition.Location = new Point(0, paneldDignosis.Location.Y + paneldDignosis.Height + 20);
 
             }
 
         }
-        private void DignosisPanelSizeChanged(object sender, EventArgs e)
+        private void DignosisPanelSizeChanged(object sender, EventArgs e)//for new panel
         {
             var firstPanel = true;
             int index = 0;
             foreach (var panel in dignosisPanel)
             {
-              
                 if (firstPanel)
                 {
                     firstPanel=false;
                     index++;
                     continue;
-
                 }
 
-                panel.Location = new Point(0, dignosisPanel[index - 1].Location.Y + dignosisPanel[index - 1].Height + 5);
-
+                panel.Location = new Point(0, dignosisPanel[index - 1].Location.Y + dignosisPanel[index - 1].Height + 10);
                 index++;
             }
-
             panelDiagnosisCondition.Location = new Point(0, dignosisPanel[dignosisPanel.Count - 1].Location.Y +
-                dignosisPanel[dignosisPanel.Count - 1].Height + 10);
-
+                dignosisPanel[dignosisPanel.Count - 1].Height + 20);
 
         }
         private void addDignosis_Click(object sender, EventArgs e)
         {
             simpleButton2.Enabled = true;
-
-
             Panel newPanel = new Panel();
-            newPanel.Size = new Size(1280, 80);
-            //newPanel.Location = new Point(0, dignosisPanelX); // Adjust the location as needed
+            newPanel.Size = new Size(1360, 80);
             if (dignosisPanel.Count == 0)
             {
-                newPanel.Location = new Point(0, paneldDignosis.Location.Y + paneldDignosis.Height + 5);
+              newPanel.Location = new Point(0, paneldDignosis.Location.Y + paneldDignosis.Height + 10);
             }
             else
             {
-                newPanel.Location=new Point(0, dignosisPanel[dignosisPanel.Count - 1].Location.Y + dignosisPanel[dignosisPanel.Count - 1].Height + 5);
+               newPanel.Location=new Point(0, dignosisPanel[dignosisPanel.Count - 1].Location.Y + dignosisPanel[dignosisPanel.Count - 1].Height + 10);
             }
-            panelDiagnosisCondition.Location= new Point(0, newPanel.Location.Y + newPanel.Height + 10);
+            panelDiagnosisCondition.Location= new Point(0, newPanel.Location.Y + newPanel.Height + 20);
 
             // Adjust the location as needed
             newPanel.BackColor = Color.FromArgb(240, 240, 240);
             newPanel.SizeChanged += DignosisPanelSizeChanged;
             dignosisPanel.Add(newPanel);
-
+            panelDignosis.Controls.Add(newPanel);
             // Add the panel to the collection and the form
             panelCollection.Add(newPanel);
             Button button=new Button();
@@ -562,8 +591,7 @@ namespace Clinical_Managment_System
             btn.Click += new EventHandler(AcceptButtonForEachDiagnosis_Click);    
             btn.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
             newPanel.Controls.Add(btn);
-
-            DignosisPanel.Controls.Add(newPanel);
+            //ConditionPanel.Controls.Add(newPanel);
 
             dignosisControl.DiseasesType = new SearchLookUpEdit();
             dignosisControl.DiseasesType.EditValue = 1;
@@ -572,7 +600,7 @@ namespace Clinical_Managment_System
             dignosisControl.DiseasesType.Location = new Point(40, 23);
             dignosisControl.DiseasesType.Font = new Font("Times New Roman", 12.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));      
             dignosisControl.DiseasesType.Properties.DisplayMember = "Description";
-            dignosisControl.DiseasesType.Properties.ValueMember = "Id";
+           // dignosisControl.DiseasesType.Properties.ValueMember = "Id";
             dignosisControl.DiseasesType.Properties.PopulateViewColumns();  
 
 
@@ -678,7 +706,7 @@ namespace Clinical_Managment_System
             {
                 Panel lastPanel = panelCollection[panelCollection.Count - 1];
                 panelCollection.Remove(lastPanel);
-                DignosisPanel.Controls.Remove(lastPanel);
+               // ConditionPanel.Controls.Remove(lastPanel);
                 dignosisPanel.Remove(lastPanel);    
                 dignosisPanelX = dignosisPanelX - 190;
                 if (dignosisPanel.Count != 0)
@@ -702,7 +730,7 @@ namespace Clinical_Managment_System
         {
             foreach (var control in listControls)
             {
-                control.DiseasesType.BackColor = Color.White;   
+                control.DiseasesType.BackColor = SystemColors.Window;
 
             }
         }
@@ -781,7 +809,7 @@ namespace Clinical_Managment_System
                 button.Font = new Font("Times New Roman", 14.25F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
                 button.BackColor = Color.CadetBlue;
                 button.Tag = sample;
-                button.Click+=Button_Click;
+                button.Click+=SampleButton_Click;
                 button.Size = new Size(210,32);
                 button.Location = new Point(sampleLocationX,sampleLocationY);
                 sampleLocationX += button.Width + 5;
@@ -811,7 +839,7 @@ namespace Clinical_Managment_System
             Button hoverdButton = (Button)sender;
             hoverdButton.BackColor = Color.CadetBlue;
         }
-        private void Button_Click(object sender, EventArgs e)
+        private void SampleButton_Click(object sender, EventArgs e)
         {
 
             if (sender is Button button)
@@ -820,23 +848,49 @@ namespace Clinical_Managment_System
                 if (button.Tag is Sample samples)
                 {
                  
-                    panels = orders.GetPanels(samples.Id);                    
-                     allTests = orders.getPanelAandTests(samples.Id);
+                    if (samples.isLoadFromDb)
+                    {
+                        panels = orders.GetPanels(samples.Id);
+                        allTests = orders.getPanelAandTests(samples.Id);
+                        allpanelsinAllSamples.AddRange(panels);
+                        allTestsinAllSamples.AddRange(allTests);
+                    }
+                    else
+                    {
+                        panels=allpanelsinAllSamples.Where(x => x.SampleId == samples.Id).ToList();
+                        allTests= allTestsinAllSamples.Where(x=>x.SampleId == samples.Id).ToList(); 
+                    }
+
+                    samples.isLoadFromDb = false;
+                
+                
                     int panelButtonX = 11;
                     int panelButtonY = 35;
                     int panelCount = 0;
                     int countButtons = 0;
                     groupBoxPanel.Controls.Clear();                  
-                    foreach (var panel in panels) 
+                    foreach (Panels panel in panels) 
                     {
                         SimpleButton panelButton =new SimpleButton();
                         panelButton.Tag = panel;
                         panelButton.Click += PanelButton_Click;
                         panelButton.Text = panel.PanelName;
                         panelButton.Size = new Size(270, 42);
-                        panelButton.ForeColor = Color.Black;
-                        panelButton.BackColor = Color.WhiteSmoke;
                         panelButton.Font = new Font("Times New Roman", 14.25F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+
+                        if (panel.isClicked)
+                        {
+                            panelButton.ForeColor = Color.Black;
+                            panelButton.BackColor = Color.WhiteSmoke;
+
+                        }
+                        else
+                        {                           
+                            panelButton.ForeColor = Color.Blue;
+                            panelButton.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton5.ImageOptions.Image")));
+                            panelButton.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+                            panelButton.BackColor = Color.DarkGray;
+                        }
                         panelButton.Location=new Point(panelButtonX,panelButtonY);
                         panelButtonX += 280;
                         groupBoxPanel.Controls.Add(panelButton);    
@@ -870,9 +924,24 @@ namespace Clinical_Managment_System
                         testButton.Tag = test;                       
                         testButton.Text = test.TestName;
                         testButton.Size = new Size(270, 42);
-                        testButton.ForeColor = Color.Black;
-                        testButton.BackColor = Color.WhiteSmoke;
                         testButton.Font = new Font("Times New Roman", 14.25F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+
+                        if (test.isClicked)
+                        {
+                            testButton.ForeColor = Color.Black;
+                            testButton.BackColor = Color.WhiteSmoke;
+
+
+                        }
+                        else
+                        {
+                            testButton.ForeColor = Color.Blue;
+                            testButton.BackColor = Color.White;
+                            testButton.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton5.ImageOptions.Image")));
+                            testButton.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+
+
+                        }
                         testButton.Location = new Point(testButtonX, testButtonY);
                         testButtonX += 280;
                         groupBoxTests.Controls.Add(testButton);
@@ -907,8 +976,8 @@ namespace Clinical_Managment_System
             {
                 if (button.Tag is Panels panel)
                 {
-                    var testbuttons = testButtonList.Where(x=>x.Id==panel.Id).ToList();
-
+                    List<ListofButtons> testbuttons = testButtonList.Where(x=>x.Id==panel.Id).ToList();
+                    var panelWithTests = allTests.Where(x => x.PanelId == panel.Id);
                     if (panel.isClicked)
                     {
                         button.ForeColor = Color.Blue;
@@ -918,6 +987,7 @@ namespace Clinical_Managment_System
                         button.BackColor = Color.DarkGray;
                         
                         panel.isClicked = false;
+                        
                         //create order
                         Label lbl = new Label();
                         lbl.Tag = panel.Id;
@@ -939,14 +1009,24 @@ namespace Clinical_Managment_System
                         panelSelectedTest.Controls.Add(lbl);
                         OrderedPanelsLabel.Add(lbl);    
                         //add the selected panel to the list
-                        SampleElements panelWithTests=allTests.FirstOrDefault(x=>x.PanelId==panel.Id);
-                        sampleElements.Add(panelWithTests);
-                        foreach (var testbutton in testbuttons)
+                     
+                        foreach(SampleElements test in panelWithTests)
                         {
-                          testbutton.TestButton.ForeColor = Color.Black;
-                          testbutton.TestButton.BackColor = Color.WhiteSmoke;
-                          testbutton.TestButton.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton5.ImageOptions.Image")));
-                          testbutton.TestButton.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+                            test.isClicked = false;
+                          
+
+
+                        }
+                        //var panelandTests = allTests.FirstOrDefault(x => x.PanelId == panel.Id);
+                        //sampleElements.Add(panelandTests);
+                        foreach (ListofButtons testbutton in testbuttons)
+                        {
+                            testbutton.TestButton.ForeColor = Color.Black;
+                            testbutton.TestButton.BackColor = Color.WhiteSmoke;
+                            testbutton.TestButton.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton5.ImageOptions.Image")));
+                            testbutton.TestButton.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+                  
+
                         }
 
 
@@ -980,11 +1060,18 @@ namespace Clinical_Managment_System
                             item.Location = new Point(30, OrderedPanelsLabel[index - 1].Location.Y + OrderedPanelsLabel[index - 1].Height + 20);
                             index++;
                         }
+                        foreach (var test in panelWithTests)
+                        {
+                            test.isClicked = true;
+
+
+                        }
                         foreach (var testbutton in testbuttons)
                         {
                            testbutton.TestButton.ForeColor = Color.Black;
                            testbutton.TestButton.BackColor = Color.White;
                            testbutton.TestButton.ImageOptions.Image = null;
+                       
                         }
 
                     }
@@ -993,78 +1080,10 @@ namespace Clinical_Managment_System
             }
             }
         }
-        //bool isTestButtonClicked = true;
-        //private void TestButton_Click(object sender, EventArgs e)
-        //{
-            //if (sender is SimpleButton button)
-            //{
-            //    if (button.Tag is SampleElements elements)
-            //    {
-            //       if (elements.isClicked)
-            //        {
-            //            button.ForeColor = Color.Black;
-            //            button.BackColor = Color.WhiteSmoke;
-            //            isTestButtonClicked = !isTestButtonClicked;
-            //            elements.isClicked = !elements.isClicked;
-            //            sampleElements.Add(elements);
-                       
-            //           //lable for slected order
-            //           Panel panelTest =new Panel();
-            //            panelTest.Size=new Size(251, 40);
-            //            panelTest.Location=new Point(0, selectedTestPanelHeight);
-            //            selectedTestPanelHeight += 45;
-            //            panelSelectedTest.Controls.Add(panelTest);
-
-            //            Label label = new Label();
-            //            label.Text = elements.TestName.Trim();
-            //            label.Tag = elements.TestId;
-            //            //label.AutoSize = true;  
-            //            label.Location = new Point(6, 14);
-            //            //labelY += 28;
-            //            label.BackColor = Color.WhiteSmoke;
-            //            button.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton5.ImageOptions.Image")));
-            //            button.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            //            label.Font= new Font("Times New Roman", 11F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
-            //            panelTest.Controls.Add(label);
-            //            panelSelectedTest.Size = new Size(panelSelectedTest.Width, panelSelectedTest.Height + 45);
-                        ///for remove button \
-                        //Button buttonRemove = new Button();
-                        //buttonRemove.Text = "Remove";
-                        //button.Tag = elements;
-                        //buttonRemove.Location = new Point(160, 10);
-                        //buttonRemove.Click += new EventHandler(ButtonForEachLabel_Click);
-                        //panelTest.Controls.Add(buttonRemove);
-                   // }
-            //        else if (!elements.isClicked)
-            //        {
-                     
-            //            button.ForeColor = Color.Black;
-            //            button.BackColor = Color.White;
-            //            isTestButtonClicked = !isTestButtonClicked;
-            //            elements.isClicked = !elements.isClicked;
-            //            button.ImageOptions.Image = null;
-            //            Control label = panelSelectedTest.Controls.OfType<Label>()
-            //                .FirstOrDefault(tag=>tag.Tag!=null&& tag.Tag.ToString()==elements.TestId.ToString());
-
-            //           panelSelectedTest.Controls.Remove(label);
-            //           panelSelectedTest.Size = new Size(panelSelectedTest.Width, panelSelectedTest.Height - 45);
-            //           sampleElements.Remove(elements);
-                  
-
-
-            //        }
-            //    }
-            //}
-       // }
-
+       
         private void ButtonForEachLabel_Click(object sender, EventArgs e)
         {
-            //Button clickedButton = (Button)sender;
-            //Panel parentPanel = (Panel)clickedButton.Parent;
-            //SampleElements element= (SampleElements)clickedButton.Tag;
-            //panelSelectedTest.Controls.Remove(parentPanel);
-            //panelSelectedTest.Size = new Size(panelSelectedTest.Width, panelSelectedTest.Height - 45);
-            //sampleElements.Remove(element);
+          
 
 
         }
@@ -1100,15 +1119,13 @@ namespace Clinical_Managment_System
 
             }
         }
-     
-        
-      
+                   
         #endregion
 
         private void dropDownDiseases_EditValueChanged(object sender, EventArgs e)
         {
-            string displayMember = dropDownDiseases.Properties.GetDisplayText(dropDownDiseases.EditValue);
-            lblTest.Text=displayMember; 
+            dropDownDiseases.BackColor= Color.White;    
+          
         }
 
         bool btnConditionDescriptionAddChecker = true;
@@ -1118,72 +1135,311 @@ namespace Clinical_Managment_System
             {
                 panelDiagnosisCondition.Size = new Size(panelDiagnosisCondition.Width, 185);
                 btnConditionDescriptionAdd.Image = ((System.Drawing.Image)(resources.GetObject("simpleButton4.ImageOptions.Image")));
-                btnConditionDescriptionAddChecker = !btnConditionDescriptionAddChecker;   
+                btnConditionDescriptionAddChecker = !btnConditionDescriptionAddChecker;
+                gridControlConditionDisplay.Location = new Point(0, panelDiagnosisCondition.Location.Y + panelDiagnosisCondition.Height + 10);
+
+
             }
             else if(!btnConditionDescriptionAddChecker) 
             {
                 panelDiagnosisCondition.Size = new Size(panelDiagnosisCondition.Width, 100);
                 btnConditionDescriptionAdd.Image= ((System.Drawing.Image)(resources.GetObject("btnConditionDescriptionAdd.ImageOptions.Image")));
                 btnConditionDescriptionAddChecker = !btnConditionDescriptionAddChecker;
+                gridControlConditionDisplay.Location = new Point(0, panelDiagnosisCondition.Location.Y + panelDiagnosisCondition.Height + 10);
+
             }
         }
+        DevExpress.XtraGrid.GridControl gridControlConditionDisplay = new DevExpress.XtraGrid.GridControl();
+       
 
         private void btnConditionAdd_Click(object sender, EventArgs e)
         {
+            //validation
+            ComboxData data1 = searchLookUpEditCondition.EditValue as ComboxData;
+            if (data1 is null || data1.Id <= 1)
+            {
+                searchLookUpEditCondition.BackColor = Color.LightPink;
+                searchLookUpEditCondition.Focus();
+                return;
+            }
+            if (!(checkBoxActive.Checked || checkBoxInActive.Checked || checkBoxHistoryof.Checked))
+            {
+                checkBoxActive.BackColor = Color.LightPink;
+                checkBoxActive.Focus();
+                checkBoxInActive.BackColor = Color.LightPink;
+                checkBoxInActive.Focus();
+                checkBoxHistoryof.BackColor = Color.LightPink;
+                checkBoxHistoryof.Focus();  
+                return;
+            }
+            if (string.IsNullOrEmpty(dateEditCondition.Text.Trim()))
+            {
+                dateEditCondition.BackColor = Color.LightPink;  
+                dateEditCondition.Focus();
+            }
+            /*
+             * creating a modle data to crate the detail grid view
+             * and to save to the database
+             */
+
             DignosisConditionDetail conditionDetail=new DignosisConditionDetail();
-            conditionDetail.ConditionDetail = "Condition";
-                //searchLookUpEditCondition.Properties.GetDisplayText(searchLookUpEditCondition.EditValue);
+            conditionDetail.Condition =searchLookUpEditCondition.Properties.GetDisplayText(searchLookUpEditCondition.EditValue);
             conditionDetail.Status = "Active";
-            conditionDetail.CreatedDate= dateEditCondition.DateTime.Date;
-            conditionDetail.Note = "note";
-            conditionDetail.Action = "Active";
-           // Create the GridControl
-            GridControl gridControl1 = new GridControl();
-            GridView gridView1 = new GridView();
+            conditionDetail.Date= dateEditCondition.DateTime.Date;
+            conditionDetail.Note = richTextBoxConditionDescription.Text.Trim();
+            if (checkBoxActive.Checked)
+            {
+                conditionDetail.Action ="Active";
+              
+            }
+            else if(checkBoxInActive.Checked)
+            {
+                conditionDetail.Action = "In Active";
+            }
+            else
+            {
+                conditionDetail.Action = "History Of";
+            }
 
-            // Add the GridControl to the form
-            DignosisPanel.Controls.Add(gridControl1);
+            conditionDetails.Add(conditionDetail);  
+            //creating a grid view to show detail about patient conditions
 
-            // Set up the GridControl properties
-            gridControl1.Location = new Point(0, panelDiagnosisCondition.Location.Y + panelDiagnosisCondition.Height + 10);
-            gridControl1.Size = new Size(panelDiagnosisCondition.Width , 200);
-           // gridControl1.ViewCollection.AddRange(new BaseView[] { gridView1 });
+            DevExpress.XtraGrid.GridControl gridControlConditionDisplay = new DevExpress.XtraGrid.GridControl();                 
+            GridView gridViewConditiondisplay = new GridView(gridControlConditionDisplay);       
+            gridControlConditionDisplay.MainView = gridViewConditiondisplay;            
+            gridControlConditionDisplay.Location = new Point(0, panelDiagnosisCondition.Location.Y + panelDiagnosisCondition.Height + 10);
+            gridControlConditionDisplay.Size = new Size(panelDiagnosisCondition.Width , 200);
+            gridViewConditiondisplay.OptionsBehavior.Editable = false; 
+            //gridViewConditiondisplay.CustomRowCellEdit += gridViewConditiondisplay_CustomRowCellEdit;
+            gridViewConditiondisplay.PopulateColumns();
+            gridViewConditiondisplay.OptionsView.ShowGroupPanel = false;
+            gridViewConditiondisplay.Appearance.HeaderPanel.Font= new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+            gridViewConditiondisplay.Appearance.Row.Font= new Font("Times New Roman", 9F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+            gridViewConditiondisplay.Appearance.HeaderPanel.BackColor = Color.RoyalBlue;    
+            
+            gridControlConditionDisplay.DataSource = conditionDetails;
+            panelDignosis.Controls.Add(gridControlConditionDisplay);
 
-            // Set up the GridView properties
-            gridView1.GridControl = gridControl1;
-            gridView1.Name = "gridView1";
-            gridView1.OptionsView.ColumnAutoWidth = true;
-            gridControl1.ViewCollection.AddRange(new BaseView[] { gridView1 });
 
-          
-
-            // Assign a data source (example: a simple list of objects)
-            gridView1.Columns.Clear(); // Clear columns in case of any default columns
-
-            // Define columns
-            gridView1.Columns.AddVisible("ID", "ID");
-            gridView1.Columns.AddVisible("Name", "Name");
-            gridView1.Columns.AddVisible("Age", "Age");
-            gridView1.Columns.AddVisible("Action", "action");
-
-            // Create a sample data source (can be a list of objects)
-            var data = new[] {
-                new { ID = 1, Name = "John Doe", Age = 30, action="Active" },
-                new { ID = 2, Name = "Jane Smith", Age = 25 ,action="History of"}
-                // Add more data as needed
-            };
-
-            gridControl1.DataSource = data;
-            RepositoryItemButtonEdit repositoryItemButton = new RepositoryItemButtonEdit();
-            repositoryItemButton.TextEditStyle = TextEditStyles.HideTextEditor;
-            repositoryItemButton.Buttons[0].Caption = "Active";
-            repositoryItemButton.Buttons[0].Kind = ButtonPredefines.Glyph;
-            gridView1.Columns["Action"].ColumnEdit = repositoryItemButton;
         }
 
-        private void btnSaveDisposition_Click_1(object sender, EventArgs e)
+       
+        private void panelDiagnosisControlBody_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void DignosisPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void btnAcceptDignosisDiseases_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void searchLookUpEditCondition_EditValueChanged(object sender, EventArgs e)
+        {
+            string displayMember = searchLookUpEditCondition.Properties.GetDisplayText(dropDownDiseases.EditValue);
+            searchLookUpEditCondition.BackColor = Color.White;
+
+        }
+
+        private void btnAcceptCondition_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBoxActive_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxActive.Checked)
+            {
+                checkBoxInActive.Checked = false;
+                checkBoxInActive.BackColor = Color.White;   
+                checkBoxHistoryof.Checked = false; 
+                checkBoxHistoryof.BackColor = Color.White;  
+                
+            }
+            checkBoxActive.BackColor = Color.White; 
+        }
+
+        private void checkBoxInActive_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxInActive.Checked)
+            {
+                checkBoxActive.Checked = false;
+                checkBoxActive.BackColor = Color.White;
+                checkBoxHistoryof.Checked = false;
+                checkBoxHistoryof.BackColor = Color.White;
+
+            }
+            checkBoxInActive.BackColor = Color.White;
+        }
+
+        private void checkBoxHistoryof_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxHistoryof.Checked)
+            {
+                checkBoxInActive.Checked = false;
+                checkBoxInActive.BackColor = Color.White;
+                checkBoxActive.Checked = false;
+                checkBoxActive.BackColor = Color.White;
+
+            }
+            checkBoxHistoryof.BackColor = Color.White;
+
+        }
+
+        private void dateEditCondition_EditValueChanged(object sender, EventArgs e)
+        {
+            dateEditCondition.BackColor = Color.White;  
+        }
+
+        private void btnOrderCancel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void gridViewAppointmentdocument_RowStyle(object sender, RowStyleEventArgs e)
+        {
+
+            DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+
+            if (e.RowHandle >= 0)
+            {
+
+                DateTime cellValue = DateTime.Parse(view.GetRowCellValue(e.RowHandle,
+                                                        "OrderedDate").ToString());
+
+
+                if (cellValue > DateTime.Now)
+                {
+                    e.Appearance.BackColor = Color.LightGray;
+
+                }
+                if (cellValue < DateTime.Now)
+                {
+                    e.Appearance.BackColor = Color.LightPink;
+                }
+
+                if (cellValue == DateTime.Now)
+                {
+                    e.Appearance.BackColor = Color.LightBlue;
+                    e.HighPriority = true;
+                }
+
+            }
+        }
+
+        private void btnSaveAppointment_Click(object sender, EventArgs e)
+        {
+
+            VisitLocation selectedVisitLocation = (VisitLocation)comboBoxLocation.SelectedItem;
+            var visitLocationId = selectedVisitLocation.id;
+
+            ServiceType selectedServiceType = (ServiceType)comboBoxServices.SelectedItem;
+            var serviceTypeId = selectedServiceType.id;
+           
+            if (string.IsNullOrEmpty(comboBoxServices.Text.Trim()) || serviceTypeId<=1)
+            {
+                comboBoxServices.BackColor = Color.LightPink;
+                comboBoxServices.Focus();
+                return;
+            }
+            if (string.IsNullOrEmpty(comboBoxLocation.Text.Trim()) || visitLocationId <= 1)
+            {
+                comboBoxLocation.BackColor = Color.LightPink;
+                comboBoxLocation.Focus();
+                return;
+            }
+            if (string.IsNullOrEmpty(appointmentDate.SelectionStart.ToString()) || appointmentDate.SelectionStart.Date < DateTime.Today)
+            {
+                appointmentDate.BackColor = Color.LightPink;
+                appointmentDate.Focus();
+                MessageBox.Show("Appointmnet Date Can not be the Passed Date, Re Enter The Date Again!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (string.IsNullOrEmpty(appointmentNote.Text.Trim()))
+            {
+                appointmentNote.BackColor = Color.LightPink;
+                appointmentNote.Focus();
+                return;
+            }
+           
+            AppointmmentDto appointmmentDto = new AppointmmentDto();
+            appointmmentDto.PatientId = "H-00002-2";
+
+            appointmmentDto.AppointmentTypeId = visitLocationId;
+
+          
+            appointmmentDto.VisitLocationId=(int)serviceTypeId;   
+
+            appointmmentDto.AppointmentDescription= appointmentNote.Text.Trim();
+            appointmmentDto.Status = true;
+            appointmmentDto.OrderedBy = "Habtish";
+            appointmmentDto.AppointmentDate = appointmentDate.SelectionStart;
+            appointmmentDto.Remark= string.Empty;
+            var addAppointment = dbContext.addAppointment(appointmmentDto);
+            if (addAppointment)
+            {
+
+                MessageBox.Show("Appointment Added","Success",MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //refresh the appoiontment list
+                var appointmentList = dbContext.loadAppointmentSummary();
+                appointmentList.OrderBy(x => dateComparision(x.OrderedDate)).ToList();
+                gridControlAppointmentDocument.DataSource = dbContext.loadAppointmentSummary();
+            }
+            else
+            {
+                MessageBox.Show("Appointment Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+
+        }
+
+        private void comboBoxServices_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            comboBoxServices.BackColor=SystemColors.Window;
+        }
+
+        private void comboBoxLocation_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            comboBoxLocation.BackColor=SystemColors.Window; 
+        }
+
+        private void appointmentDate_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void appointmentDate_DateTimeChanged(object sender, EventArgs e)
+        {
+            appointmentDate.BackColor=SystemColors.Window;  
+        }
+
+        private void appointmentNote_TextChanged(object sender, EventArgs e)
+        {
+            appointmentNote.BackColor=SystemColors.Window;  
+        }
+        bool drugOrderPanel = true;
+        
+        private void btnDrugOrder_Click(object sender, EventArgs e)
+        {
+            int height = 527;
+            height= drugOrderPanel? panelDrug.Height:height;
+            
+            if (drugOrderPanel)
+            {
+                panelDrug.Height = 0;
+                drugOrderPanel=!drugOrderPanel;
+            }
+            
+            else 
+            {
+                panelDrug.Height = height;
+                drugOrderPanel = !drugOrderPanel;
+            }
         }
     }
 }

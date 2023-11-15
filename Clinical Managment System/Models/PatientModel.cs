@@ -19,7 +19,7 @@ namespace Clinical_Managment_System.Models
     }
     public class PatientsForHomeDisplay
     {
-        public string PatientID { get; set; }
         public string FullName { get; set; }
+        public string PatientID { get; set; }
     }
 }

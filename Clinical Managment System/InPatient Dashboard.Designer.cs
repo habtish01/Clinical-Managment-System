@@ -70,6 +70,7 @@
             this.groupControl2 = new DevExpress.XtraEditors.GroupControl();
             this.label3 = new System.Windows.Forms.Label();
             this.panelForPatient = new System.Windows.Forms.Panel();
+            this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
             this.label5 = new System.Windows.Forms.Label();
             this.patientId = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -86,7 +87,7 @@
             this.LogoName = new System.Windows.Forms.Label();
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.pictureBoxLogedUser = new System.Windows.Forms.PictureBox();
-            this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
+            this.btnBackHome = new DevExpress.XtraEditors.SimpleButton();
             this.panelImpatientDashboard.SuspendLayout();
             this.footerPanel.SuspendLayout();
             this.panelDashbordCollection.SuspendLayout();
@@ -140,7 +141,7 @@
             this.panelImpatientDashboard.Controls.Add(this.HeaderPanel);
             this.panelImpatientDashboard.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelImpatientDashboard.Location = new System.Drawing.Point(0, 0);
-            this.panelImpatientDashboard.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelImpatientDashboard.Margin = new System.Windows.Forms.Padding(4);
             this.panelImpatientDashboard.Name = "panelImpatientDashboard";
             this.panelImpatientDashboard.Size = new System.Drawing.Size(1942, 1088);
             this.panelImpatientDashboard.TabIndex = 0;
@@ -191,7 +192,7 @@
             this.panelDashbordCollection.Controls.Add(this.groupControl1);
             this.panelDashbordCollection.Controls.Add(this.groupControl2);
             this.panelDashbordCollection.Location = new System.Drawing.Point(52, 187);
-            this.panelDashbordCollection.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelDashbordCollection.Margin = new System.Windows.Forms.Padding(4);
             this.panelDashbordCollection.Name = "panelDashbordCollection";
             this.panelDashbordCollection.Size = new System.Drawing.Size(1940, 800);
             this.panelDashbordCollection.TabIndex = 9;
@@ -209,7 +210,7 @@
             this.groupControl5.AppearanceCaption.Options.UseFont = true;
             this.groupControl5.Controls.Add(this.label14);
             this.groupControl5.Location = new System.Drawing.Point(977, 560);
-            this.groupControl5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupControl5.Margin = new System.Windows.Forms.Padding(4);
             this.groupControl5.Name = "groupControl5";
             this.groupControl5.Size = new System.Drawing.Size(940, 71);
             this.groupControl5.TabIndex = 33;
@@ -238,7 +239,7 @@
             this.groupControl14.AppearanceCaption.Options.UseFont = true;
             this.groupControl14.Controls.Add(this.label12);
             this.groupControl14.Location = new System.Drawing.Point(5, 560);
-            this.groupControl14.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupControl14.Margin = new System.Windows.Forms.Padding(4);
             this.groupControl14.Name = "groupControl14";
             this.groupControl14.Size = new System.Drawing.Size(940, 71);
             this.groupControl14.TabIndex = 25;
@@ -267,7 +268,7 @@
             this.groupControl6.AppearanceCaption.Options.UseFont = true;
             this.groupControl6.Controls.Add(this.label16);
             this.groupControl6.Location = new System.Drawing.Point(977, 639);
-            this.groupControl6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupControl6.Margin = new System.Windows.Forms.Padding(4);
             this.groupControl6.Name = "groupControl6";
             this.groupControl6.Size = new System.Drawing.Size(940, 71);
             this.groupControl6.TabIndex = 34;
@@ -296,7 +297,7 @@
             this.groupControl15.AppearanceCaption.Options.UseFont = true;
             this.groupControl15.Controls.Add(this.label13);
             this.groupControl15.Location = new System.Drawing.Point(5, 639);
-            this.groupControl15.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupControl15.Margin = new System.Windows.Forms.Padding(4);
             this.groupControl15.Name = "groupControl15";
             this.groupControl15.Size = new System.Drawing.Size(940, 71);
             this.groupControl15.TabIndex = 25;
@@ -325,7 +326,7 @@
             this.groupControl7.AppearanceCaption.Options.UseFont = true;
             this.groupControl7.Controls.Add(this.label17);
             this.groupControl7.Location = new System.Drawing.Point(977, 481);
-            this.groupControl7.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupControl7.Margin = new System.Windows.Forms.Padding(4);
             this.groupControl7.Name = "groupControl7";
             this.groupControl7.Size = new System.Drawing.Size(940, 71);
             this.groupControl7.TabIndex = 32;
@@ -354,7 +355,7 @@
             this.groupControl13.AppearanceCaption.Options.UseFont = true;
             this.groupControl13.Controls.Add(this.label11);
             this.groupControl13.Location = new System.Drawing.Point(5, 481);
-            this.groupControl13.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupControl13.Margin = new System.Windows.Forms.Padding(4);
             this.groupControl13.Name = "groupControl13";
             this.groupControl13.Size = new System.Drawing.Size(940, 71);
             this.groupControl13.TabIndex = 24;
@@ -383,7 +384,7 @@
             this.groupControl8.AppearanceCaption.Options.UseFont = true;
             this.groupControl8.Controls.Add(this.label18);
             this.groupControl8.Location = new System.Drawing.Point(976, 309);
-            this.groupControl8.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupControl8.Margin = new System.Windows.Forms.Padding(4);
             this.groupControl8.Name = "groupControl8";
             this.groupControl8.Size = new System.Drawing.Size(940, 79);
             this.groupControl8.TabIndex = 28;
@@ -412,7 +413,7 @@
             this.groupControl9.AppearanceCaption.Options.UseFont = true;
             this.groupControl9.Controls.Add(this.label19);
             this.groupControl9.Location = new System.Drawing.Point(976, 395);
-            this.groupControl9.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupControl9.Margin = new System.Windows.Forms.Padding(4);
             this.groupControl9.Name = "groupControl9";
             this.groupControl9.Size = new System.Drawing.Size(940, 79);
             this.groupControl9.TabIndex = 30;
@@ -441,7 +442,7 @@
             this.groupControl11.AppearanceCaption.Options.UseFont = true;
             this.groupControl11.Controls.Add(this.label9);
             this.groupControl11.Location = new System.Drawing.Point(4, 309);
-            this.groupControl11.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupControl11.Margin = new System.Windows.Forms.Padding(4);
             this.groupControl11.Name = "groupControl11";
             this.groupControl11.Size = new System.Drawing.Size(940, 79);
             this.groupControl11.TabIndex = 9;
@@ -471,7 +472,7 @@
             this.groupControl10.AppearanceCaption.Options.UseFont = true;
             this.groupControl10.Controls.Add(this.label20);
             this.groupControl10.Location = new System.Drawing.Point(976, 4);
-            this.groupControl10.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupControl10.Margin = new System.Windows.Forms.Padding(4);
             this.groupControl10.Name = "groupControl10";
             this.groupControl10.Size = new System.Drawing.Size(940, 68);
             this.groupControl10.TabIndex = 29;
@@ -500,7 +501,7 @@
             this.groupControl12.AppearanceCaption.Options.UseFont = true;
             this.groupControl12.Controls.Add(this.label10);
             this.groupControl12.Location = new System.Drawing.Point(4, 395);
-            this.groupControl12.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupControl12.Margin = new System.Windows.Forms.Padding(4);
             this.groupControl12.Name = "groupControl12";
             this.groupControl12.Size = new System.Drawing.Size(940, 79);
             this.groupControl12.TabIndex = 10;
@@ -530,7 +531,7 @@
             this.groupControl16.AppearanceCaption.Options.UseFont = true;
             this.groupControl16.Controls.Add(this.label21);
             this.groupControl16.Location = new System.Drawing.Point(976, 229);
-            this.groupControl16.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupControl16.Margin = new System.Windows.Forms.Padding(4);
             this.groupControl16.Name = "groupControl16";
             this.groupControl16.Size = new System.Drawing.Size(940, 73);
             this.groupControl16.TabIndex = 31;
@@ -559,7 +560,7 @@
             this.groupControl3.AppearanceCaption.Options.UseFont = true;
             this.groupControl3.Controls.Add(this.label2);
             this.groupControl3.Location = new System.Drawing.Point(4, 4);
-            this.groupControl3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupControl3.Margin = new System.Windows.Forms.Padding(4);
             this.groupControl3.Name = "groupControl3";
             this.groupControl3.Size = new System.Drawing.Size(940, 68);
             this.groupControl3.TabIndex = 9;
@@ -590,7 +591,7 @@
             this.groupControl17.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
             this.groupControl17.Controls.Add(this.label22);
             this.groupControl17.Location = new System.Drawing.Point(977, 153);
-            this.groupControl17.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupControl17.Margin = new System.Windows.Forms.Padding(4);
             this.groupControl17.Name = "groupControl17";
             this.groupControl17.Size = new System.Drawing.Size(940, 69);
             this.groupControl17.TabIndex = 26;
@@ -619,7 +620,7 @@
             this.groupControl4.AppearanceCaption.Options.UseFont = true;
             this.groupControl4.Controls.Add(this.label8);
             this.groupControl4.Location = new System.Drawing.Point(4, 229);
-            this.groupControl4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupControl4.Margin = new System.Windows.Forms.Padding(4);
             this.groupControl4.Name = "groupControl4";
             this.groupControl4.Size = new System.Drawing.Size(940, 73);
             this.groupControl4.TabIndex = 10;
@@ -649,7 +650,7 @@
             this.groupControl18.AppearanceCaption.Options.UseFont = true;
             this.groupControl18.Controls.Add(this.label23);
             this.groupControl18.Location = new System.Drawing.Point(977, 80);
-            this.groupControl18.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupControl18.Margin = new System.Windows.Forms.Padding(4);
             this.groupControl18.Name = "groupControl18";
             this.groupControl18.Size = new System.Drawing.Size(940, 65);
             this.groupControl18.TabIndex = 27;
@@ -679,7 +680,7 @@
             this.groupControl1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
             this.groupControl1.Controls.Add(this.label7);
             this.groupControl1.Location = new System.Drawing.Point(5, 153);
-            this.groupControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupControl1.Margin = new System.Windows.Forms.Padding(4);
             this.groupControl1.Name = "groupControl1";
             this.groupControl1.Size = new System.Drawing.Size(940, 69);
             this.groupControl1.TabIndex = 7;
@@ -709,7 +710,7 @@
             this.groupControl2.AppearanceCaption.Options.UseFont = true;
             this.groupControl2.Controls.Add(this.label3);
             this.groupControl2.Location = new System.Drawing.Point(5, 80);
-            this.groupControl2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupControl2.Margin = new System.Windows.Forms.Padding(4);
             this.groupControl2.Name = "groupControl2";
             this.groupControl2.Size = new System.Drawing.Size(940, 65);
             this.groupControl2.TabIndex = 8;
@@ -731,6 +732,7 @@
             // 
             this.panelForPatient.BackColor = System.Drawing.Color.LightBlue;
             this.panelForPatient.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelForPatient.Controls.Add(this.btnBackHome);
             this.panelForPatient.Controls.Add(this.simpleButton1);
             this.panelForPatient.Controls.Add(this.label5);
             this.panelForPatient.Controls.Add(this.patientId);
@@ -750,6 +752,23 @@
             this.panelForPatient.Size = new System.Drawing.Size(2050, 51);
             this.panelForPatient.TabIndex = 6;
             this.panelForPatient.Paint += new System.Windows.Forms.PaintEventHandler(this.panelForPatient_Paint);
+            // 
+            // simpleButton1
+            // 
+            this.simpleButton1.Appearance.BackColor = System.Drawing.Color.Blue;
+            this.simpleButton1.Appearance.BorderColor = System.Drawing.Color.Silver;
+            this.simpleButton1.Appearance.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.simpleButton1.Appearance.ForeColor = System.Drawing.Color.White;
+            this.simpleButton1.Appearance.Options.UseBackColor = true;
+            this.simpleButton1.Appearance.Options.UseBorderColor = true;
+            this.simpleButton1.Appearance.Options.UseFont = true;
+            this.simpleButton1.Appearance.Options.UseForeColor = true;
+            this.simpleButton1.Location = new System.Drawing.Point(1813, 1);
+            this.simpleButton1.Name = "simpleButton1";
+            this.simpleButton1.Size = new System.Drawing.Size(116, 44);
+            this.simpleButton1.TabIndex = 22;
+            this.simpleButton1.Text = "Sart";
+            this.simpleButton1.Click += new System.EventHandler(this.simpleButton1_Click);
             // 
             // label5
             // 
@@ -935,24 +954,18 @@
             this.pictureBoxLogedUser.TabStop = false;
             this.pictureBoxLogedUser.Click += new System.EventHandler(this.pictureBoxLogedUser_Click);
             // 
-            // simpleButton1
+            // btnBackHome
             // 
-            this.simpleButton1.Appearance.BackColor = System.Drawing.Color.Blue;
-            this.simpleButton1.Appearance.BorderColor = System.Drawing.Color.Silver;
-            this.simpleButton1.Appearance.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.simpleButton1.Appearance.ForeColor = System.Drawing.Color.White;
-            this.simpleButton1.Appearance.Options.UseBackColor = true;
-            this.simpleButton1.Appearance.Options.UseBorderColor = true;
-            this.simpleButton1.Appearance.Options.UseFont = true;
-            this.simpleButton1.Appearance.Options.UseForeColor = true;
-            this.simpleButton1.Location = new System.Drawing.Point(1813, 1);
-            this.simpleButton1.Name = "simpleButton1";
-            this.simpleButton1.Size = new System.Drawing.Size(116, 44);
-            this.simpleButton1.TabIndex = 22;
-            this.simpleButton1.Text = "Sart";
-            this.simpleButton1.Click += new System.EventHandler(this.simpleButton1_Click);
+            this.btnBackHome.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnBackHome.ImageOptions.Image")));
+            this.btnBackHome.Location = new System.Drawing.Point(8, 6);
+            this.btnBackHome.Margin = new System.Windows.Forms.Padding(4);
+            this.btnBackHome.Name = "btnBackHome";
+            this.btnBackHome.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light;
+            this.btnBackHome.Size = new System.Drawing.Size(48, 41);
+            this.btnBackHome.TabIndex = 23;
+            this.btnBackHome.Click += new System.EventHandler(this.btnBackHome_Click);
             // 
-            // InPatient_Dashboard
+            // InPatient_DashboardForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -961,9 +974,9 @@
             this.ControlBox = false;
             this.Controls.Add(this.panelImpatientDashboard);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MinimizeBox = false;
-            this.Name = "InPatient_Dashboard";
+            this.Name = "InPatient_DashboardForm";
             this.ShowIcon = false;
             this.Text = "InPatient_Dashboard";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -1095,5 +1108,6 @@
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Label label7;
         private DevExpress.XtraEditors.SimpleButton simpleButton1;
+        private DevExpress.XtraEditors.SimpleButton btnBackHome;
     }
 }

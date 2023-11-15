@@ -16,9 +16,21 @@ namespace Clinical_Managment_System
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new ClinicalManagmentSystemForm());
-            Application.Run(new HomeClinicalSystem());
+
+            Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(GlobalExceptionHandler);
+
+            Application.Run(new ClinicalManagmentSystemForm());
+            //Application.Run(new HomeClinicalSystem());
             //Application.Run(new InPatient_DashboardForm());
+
+           
+        }
+
+        // Global exception handler
+        private static void GlobalExceptionHandler(object sender, System.Threading.ThreadExceptionEventArgs e)
+        {
+          
+            MessageBox.Show($"An unexpected error occurred: {e.Exception.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }

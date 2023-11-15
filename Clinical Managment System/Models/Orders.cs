@@ -12,6 +12,9 @@ namespace Clinical_Managment_System.Models
         public int Id { get; set; }
         public int OrderTypeId { get; set; }
         public string SampleName { get; set; }
+        public bool isClicked { get; set; }=false;
+        public bool isLoadFromDb { get; set; } = true; 
+
 
     }
 
@@ -21,6 +24,7 @@ namespace Clinical_Managment_System.Models
         public int SampleId { get; set; }    
         public string PanelName { get; set; }
         public bool isClicked { get; set; } = true;
+     
     }
     public class Tests{
         public int Id { get; set; }
@@ -55,5 +59,6 @@ namespace Clinical_Managment_System.Models
     {
         public SimpleButton TestButton { get; set; }
         public int Id { get; set; }
+        public bool isClicked { get; set; } = false;
     }
 }
