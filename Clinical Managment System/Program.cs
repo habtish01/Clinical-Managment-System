@@ -19,8 +19,8 @@ namespace Clinical_Managment_System
 
             Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(GlobalExceptionHandler);
 
-            Application.Run(new ClinicalManagmentSystemForm());
-            //Application.Run(new HomeClinicalSystem());
+            //Application.Run(new ClinicalManagmentSystemForm());
+            Application.Run(new HomeClinicalSystem());
             //Application.Run(new InPatient_DashboardForm());
 
            

@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ClinicalManagmentSystemForm));
-            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions2 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions1 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             this.HeaderPanel = new System.Windows.Forms.Panel();
             this.btnExit = new DevExpress.XtraEditors.SimpleButton();
             this.LoggedUser = new System.Windows.Forms.Label();
@@ -973,10 +973,10 @@
             this.dropDownDiseases.Name = "dropDownDiseases";
             this.dropDownDiseases.Properties.Appearance.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dropDownDiseases.Properties.Appearance.Options.UseFont = true;
-            serializableAppearanceObject5.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            serializableAppearanceObject5.Options.UseFont = true;
+            serializableAppearanceObject1.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            serializableAppearanceObject1.Options.UseFont = true;
             this.dropDownDiseases.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, true, false, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.dropDownDiseases.Properties.PopupView = this.gridView1;
             this.dropDownDiseases.Size = new System.Drawing.Size(207, 26);
             this.dropDownDiseases.TabIndex = 41;
@@ -1891,7 +1891,7 @@
             // 
             this.checkBoxWalkIn.AutoSize = true;
             this.checkBoxWalkIn.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxWalkIn.Location = new System.Drawing.Point(349, 215);
+            this.checkBoxWalkIn.Location = new System.Drawing.Point(348, 179);
             this.checkBoxWalkIn.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxWalkIn.Name = "checkBoxWalkIn";
             this.checkBoxWalkIn.Size = new System.Drawing.Size(170, 23);
@@ -1903,7 +1903,7 @@
             // 
             this.checkBoxRecurring.AutoSize = true;
             this.checkBoxRecurring.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxRecurring.Location = new System.Drawing.Point(127, 215);
+            this.checkBoxRecurring.Location = new System.Drawing.Point(126, 179);
             this.checkBoxRecurring.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxRecurring.Name = "checkBoxRecurring";
             this.checkBoxRecurring.Size = new System.Drawing.Size(183, 23);
@@ -1915,7 +1915,7 @@
             // 
             this.label37.AutoSize = true;
             this.label37.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label37.Location = new System.Drawing.Point(46, 215);
+            this.label37.Location = new System.Drawing.Point(45, 179);
             this.label37.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(38, 19);
@@ -1942,9 +1942,10 @@
             this.btnSaveAppointment.Appearance.Options.UseFont = true;
             this.btnSaveAppointment.AppearanceHovered.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.btnSaveAppointment.AppearanceHovered.Options.UseBackColor = true;
+            this.btnSaveAppointment.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveAppointment.ImageOptions.Image")));
             this.btnSaveAppointment.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.TopCenter;
             this.btnSaveAppointment.ImageOptions.SvgImageSize = new System.Drawing.Size(10, 10);
-            this.btnSaveAppointment.Location = new System.Drawing.Point(145, 2);
+            this.btnSaveAppointment.Location = new System.Drawing.Point(145, 4);
             this.btnSaveAppointment.Margin = new System.Windows.Forms.Padding(2);
             this.btnSaveAppointment.Name = "btnSaveAppointment";
             this.btnSaveAppointment.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light;
@@ -1976,7 +1977,7 @@
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(378, 275);
+            this.label13.Location = new System.Drawing.Point(33, 242);
             this.label13.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(175, 19);
@@ -1987,7 +1988,7 @@
             // 
             this.appointmentNote.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.appointmentNote.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.appointmentNote.Location = new System.Drawing.Point(382, 306);
+            this.appointmentNote.Location = new System.Drawing.Point(37, 273);
             this.appointmentNote.Margin = new System.Windows.Forms.Padding(2);
             this.appointmentNote.Name = "appointmentNote";
             this.appointmentNote.Size = new System.Drawing.Size(680, 241);
@@ -2032,7 +2033,7 @@
             // 
             this.label36.AutoSize = true;
             this.label36.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label36.Location = new System.Drawing.Point(44, 275);
+            this.label36.Location = new System.Drawing.Point(956, 74);
             this.label36.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label36.Name = "label36";
             this.label36.Size = new System.Drawing.Size(131, 19);
@@ -2124,7 +2125,7 @@
             // appointmentDate
             // 
             this.appointmentDate.EditValue = null;
-            this.appointmentDate.Location = new System.Drawing.Point(28, 303);
+            this.appointmentDate.Location = new System.Drawing.Point(940, 102);
             this.appointmentDate.Name = "appointmentDate";
             this.appointmentDate.Properties.Appearance.Font = new System.Drawing.Font("Times New Roman", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.appointmentDate.Properties.Appearance.Options.UseFont = true;

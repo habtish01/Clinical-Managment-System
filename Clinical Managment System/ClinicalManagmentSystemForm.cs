@@ -95,7 +95,7 @@ namespace Clinical_Managment_System
 
            
             //load patint id based on person id from patient table
-            // patientID = context.loadPatientId(patient.ID.ToString());
+             patientID = context.loadPatientId(patient.ID.ToString());
             List<String> type = context.LoadDispositionType(patientID);
             dropDownSelectAction.DataSource = type;
 
@@ -170,8 +170,10 @@ namespace Clinical_Managment_System
 
         private void btnBackHome_Click(object sender, EventArgs e)
         {
-            HomeClinicalSystem homeClinicalSystem = new HomeClinicalSystem();
-            homeClinicalSystem.Show();
+            InPatient_DashboardForm patientdashboard = new InPatient_DashboardForm();
+            patientdashboard.patient = patient;
+            patientdashboard.DisplayReceivedData();
+            patientdashboard.Show();
         }
         public void createConsultationControls()
         {
@@ -1396,11 +1398,10 @@ namespace Clinical_Managment_System
 
         }
 
-        private void appointmentDate_Click(object sender, EventArgs e)
+        private void simpleButton11_Click(object sender, EventArgs e)
         {
-
+            appointmentDate.DateTime = DateTime.Now;
         }
-
         private void appointmentDate_DateTimeChanged(object sender, EventArgs e)
         {
             appointmentDate.BackColor = SystemColors.Window;
@@ -1446,9 +1447,6 @@ namespace Clinical_Managment_System
 
         #endregion
 
-        private void simpleButton11_Click(object sender, EventArgs e)
-        {
-            appointmentDate.DateTime= DateTime.Now;
-        }
+       
     }
 }
