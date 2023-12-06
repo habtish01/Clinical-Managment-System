@@ -1,4 +1,5 @@
 ﻿using Clinical_Managment_System.Data_Access_Layer;
+using Clinical_Managment_System.DTOs;
 using Clinical_Managment_System.Models;
 using Clinical_Managment_System.Properties;
 using DevExpress.XtraRichEdit.Model;
@@ -20,7 +21,7 @@ namespace Clinical_Managment_System
     {
         AccessAllPateints context = new AccessAllPateints();//instance of the database context
         List<PatientModel> patientModels = new List<PatientModel>();
-
+        public Doctor doctor { get; set; }
         public HomeClinicalSystem()
         {
             InitializeComponent();
@@ -63,6 +64,17 @@ namespace Clinical_Managment_System
             Application.Exit();
         }
 
-       
+        private void label1_Click(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void simpleButton1_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(doctor.DoctorID + "\n" +
+                           doctor.DoctorName + "\n" +
+                           doctor.DoctorType + "\n" +
+                           doctor.PhoneNumber);
+        }
     }
 }

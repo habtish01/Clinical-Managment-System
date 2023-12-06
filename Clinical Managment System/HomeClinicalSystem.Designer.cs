@@ -68,37 +68,41 @@
             this.homePanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.homePanel.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.homePanel.Location = new System.Drawing.Point(0, 0);
+            this.homePanel.Margin = new System.Windows.Forms.Padding(4);
             this.homePanel.Name = "homePanel";
-            this.homePanel.Size = new System.Drawing.Size(1556, 827);
+            this.homePanel.Size = new System.Drawing.Size(1942, 1018);
             this.homePanel.TabIndex = 1;
             // 
             // panelList
             // 
             this.panelList.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.panelList.Controls.Add(this.label1);
-            this.panelList.Location = new System.Drawing.Point(1, 110);
+            this.panelList.Location = new System.Drawing.Point(1, 135);
+            this.panelList.Margin = new System.Windows.Forms.Padding(4);
             this.panelList.Name = "panelList";
-            this.panelList.Size = new System.Drawing.Size(1555, 40);
+            this.panelList.Size = new System.Drawing.Size(2073, 49);
             this.panelList.TabIndex = 2;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(177, 13);
+            this.label1.Location = new System.Drawing.Point(236, 16);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(193, 22);
+            this.label1.Size = new System.Drawing.Size(243, 26);
             this.label1.TabIndex = 0;
             this.label1.Text = "List Of Active Patients";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // panel1
             // 
             this.panel1.Controls.Add(this.HeaderPanel);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1556, 110);
+            this.panel1.Size = new System.Drawing.Size(1942, 135);
             this.panel1.TabIndex = 24;
             // 
             // HeaderPanel
@@ -111,20 +115,20 @@
             this.HeaderPanel.Controls.Add(this.pictureBoxLogedUser);
             this.HeaderPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.HeaderPanel.Location = new System.Drawing.Point(0, 0);
-            this.HeaderPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.HeaderPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.HeaderPanel.Name = "HeaderPanel";
-            this.HeaderPanel.Size = new System.Drawing.Size(1556, 109);
+            this.HeaderPanel.Size = new System.Drawing.Size(1942, 134);
             this.HeaderPanel.TabIndex = 1;
             // 
             // btnExit
             // 
             this.btnExit.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnExit.ImageOptions.Image")));
             this.btnExit.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.TopCenter;
-            this.btnExit.Location = new System.Drawing.Point(1492, 2);
-            this.btnExit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnExit.Location = new System.Drawing.Point(1989, 2);
+            this.btnExit.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnExit.Name = "btnExit";
             this.btnExit.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light;
-            this.btnExit.Size = new System.Drawing.Size(38, 32);
+            this.btnExit.Size = new System.Drawing.Size(51, 39);
             this.btnExit.TabIndex = 9;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
@@ -132,10 +136,9 @@
             // 
             this.LoggedUser.AutoSize = true;
             this.LoggedUser.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoggedUser.Location = new System.Drawing.Point(137, 45);
-            this.LoggedUser.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.LoggedUser.Location = new System.Drawing.Point(183, 55);
             this.LoggedUser.Name = "LoggedUser";
-            this.LoggedUser.Size = new System.Drawing.Size(153, 21);
+            this.LoggedUser.Size = new System.Drawing.Size(199, 27);
             this.LoggedUser.TabIndex = 6;
             this.LoggedUser.Text = "Habtamu Esubalew";
             // 
@@ -143,20 +146,19 @@
             // 
             this.LogoName.AutoSize = true;
             this.LogoName.Font = new System.Drawing.Font("Times New Roman", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LogoName.Location = new System.Drawing.Point(501, 68);
-            this.LogoName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.LogoName.Location = new System.Drawing.Point(668, 84);
             this.LogoName.Name = "LogoName";
-            this.LogoName.Size = new System.Drawing.Size(341, 24);
+            this.LogoName.Size = new System.Drawing.Size(451, 31);
             this.LogoName.TabIndex = 7;
             this.LogoName.Text = "Heal Africa Health City EMR System";
             // 
             // pictureBoxLogo
             // 
             this.pictureBoxLogo.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxLogo.Image")));
-            this.pictureBoxLogo.Location = new System.Drawing.Point(579, 2);
-            this.pictureBoxLogo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBoxLogo.Location = new System.Drawing.Point(772, 2);
+            this.pictureBoxLogo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBoxLogo.Name = "pictureBoxLogo";
-            this.pictureBoxLogo.Size = new System.Drawing.Size(173, 64);
+            this.pictureBoxLogo.Size = new System.Drawing.Size(231, 79);
             this.pictureBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxLogo.TabIndex = 8;
             this.pictureBoxLogo.TabStop = false;
@@ -164,10 +166,10 @@
             // pictureBoxLogedUser
             // 
             this.pictureBoxLogedUser.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxLogedUser.Image")));
-            this.pictureBoxLogedUser.Location = new System.Drawing.Point(49, 10);
-            this.pictureBoxLogedUser.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBoxLogedUser.Location = new System.Drawing.Point(65, 12);
+            this.pictureBoxLogedUser.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBoxLogedUser.Name = "pictureBoxLogedUser";
-            this.pictureBoxLogedUser.Size = new System.Drawing.Size(84, 83);
+            this.pictureBoxLogedUser.Size = new System.Drawing.Size(112, 102);
             this.pictureBoxLogedUser.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxLogedUser.TabIndex = 5;
             this.pictureBoxLogedUser.TabStop = false;
@@ -177,9 +179,10 @@
             this.footerPanel.BackColor = System.Drawing.Color.LightGray;
             this.footerPanel.Controls.Add(this.label15);
             this.footerPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.footerPanel.Location = new System.Drawing.Point(0, 758);
+            this.footerPanel.Location = new System.Drawing.Point(0, 933);
+            this.footerPanel.Margin = new System.Windows.Forms.Padding(4);
             this.footerPanel.Name = "footerPanel";
-            this.footerPanel.Size = new System.Drawing.Size(1556, 69);
+            this.footerPanel.Size = new System.Drawing.Size(1942, 85);
             this.footerPanel.TabIndex = 23;
             // 
             // label15
@@ -187,29 +190,31 @@
             this.label15.AutoSize = true;
             this.label15.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label15.ForeColor = System.Drawing.Color.LimeGreen;
-            this.label15.Location = new System.Drawing.Point(455, 26);
+            this.label15.Location = new System.Drawing.Point(607, 32);
+            this.label15.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(522, 22);
+            this.label15.Size = new System.Drawing.Size(658, 26);
             this.label15.TabIndex = 15;
             this.label15.Text = "@CopyWrite Heal Aafrica Health City S.C. All Right Reserved";
             // 
             // panelHomePage
             // 
             this.panelHomePage.Controls.Add(this.HomeControl);
-            this.panelHomePage.Location = new System.Drawing.Point(49, 156);
+            this.panelHomePage.Location = new System.Drawing.Point(65, 192);
+            this.panelHomePage.Margin = new System.Windows.Forms.Padding(4);
             this.panelHomePage.Name = "panelHomePage";
-            this.panelHomePage.Size = new System.Drawing.Size(1454, 596);
+            this.panelHomePage.Size = new System.Drawing.Size(1939, 734);
             this.panelHomePage.TabIndex = 3;
             // 
             // HomeControl
             // 
             this.HomeControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.HomeControl.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.HomeControl.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.HomeControl.Location = new System.Drawing.Point(0, 0);
             this.HomeControl.MainView = this.layoutViewHomeView;
-            this.HomeControl.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.HomeControl.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.HomeControl.Name = "HomeControl";
-            this.HomeControl.Size = new System.Drawing.Size(1454, 596);
+            this.HomeControl.Size = new System.Drawing.Size(1939, 734);
             this.HomeControl.TabIndex = 0;
             this.HomeControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.layoutViewHomeView});
@@ -239,8 +244,8 @@
             this.layoutViewHomeView.AppearancePrint.Card.Options.UseFont = true;
             this.layoutViewHomeView.AppearancePrint.Card.Options.UseForeColor = true;
             this.layoutViewHomeView.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
-            this.layoutViewHomeView.CardMinSize = new System.Drawing.Size(250, 50);
-            this.layoutViewHomeView.DetailHeight = 244;
+            this.layoutViewHomeView.CardMinSize = new System.Drawing.Size(333, 62);
+            this.layoutViewHomeView.DetailHeight = 300;
             this.layoutViewHomeView.GridControl = this.HomeControl;
             this.layoutViewHomeView.Name = "layoutViewHomeView";
             this.layoutViewHomeView.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.False;
@@ -269,11 +274,12 @@
             // 
             // HomeClinicalSystem
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1556, 827);
+            this.ClientSize = new System.Drawing.Size(1942, 1018);
             this.Controls.Add(this.homePanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "HomeClinicalSystem";
             this.Text = "HomeClinicalSystem";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

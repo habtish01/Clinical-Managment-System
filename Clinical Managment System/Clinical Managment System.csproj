@@ -117,6 +117,7 @@
     <Compile Include="Data\DatabaseContext.cs" />
     <Compile Include="Data\AccessAllPateints.cs" />
     <Compile Include="Data\Orders.cs" />
+    <Compile Include="DTOs\Doctor.cs" />
     <Compile Include="HomeClinicalSystem.cs">
       <SubType>Form</SubType>
     </Compile>
